@@ -1,0 +1,6 @@
+{
+  "summary":  "Rencana implementasi visualisasi data tren kunjungan UKS bulanan di dasbor Nakes menggunakan Recharts (Grafik Batang Bertumpuk & Grafik Garis), filter interaktif 6 bulan, metrik ringkasan, dan kartu insight epidemiologi otomatis, beserta dokumentasi komprehensif sistem NADI.",
+  "updatedAt":  "2026-10-30T10:05:25.488864074Z",
+  "requestFeedback":  true,
+  "userFacing":  true
+}
