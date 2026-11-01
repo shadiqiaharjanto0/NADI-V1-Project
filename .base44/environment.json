@@ -6,8 +6,7 @@
     {
       "name": "GEMINI_API_KEY",
       "description": "Google Gemini API key (https://aistudio.google.com/apikey) used by server.ts for /api/chat and /api/generate-slip. Without it the app falls back to deterministic triage text.",
-      "requiredAtBoot": true,
-      "generatedForDevelopment": true
+      "requiredAtBoot": true
     }
   ]
 }
