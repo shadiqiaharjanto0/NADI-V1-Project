@@ -61,16 +61,16 @@ Catatan: Dokumen ini diterbitkan oleh Sistem Skrining NADI untuk pendampingan ol
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-zinc-950/60 backdrop-blur-xs overflow-y-auto">
-      <div className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-zinc-200 overflow-hidden my-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-zinc-950/60 backdrop-blur-xs overflow-y-auto print-modal-backdrop">
+      <div className="bg-white rounded-xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden my-6 print-modal-container">
         {/* Apple Minimalist Header (Hidden in Print) */}
-        <div className="px-6 py-4 border-b border-zinc-200 bg-zinc-50 flex items-center justify-between no-print">
+        <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between no-print">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-zinc-100 text-zinc-800 flex items-center justify-center border border-zinc-200">
-              <FileText className="w-4 h-4 text-[#0071E3]" />
+            <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-800 flex items-center justify-center border border-teal-200">
+              <FileText className="w-4 h-4 text-[#0D9488]" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-zinc-900">
+              <h3 className="text-sm font-semibold text-slate-800">
                 Surat Pengantar & Lembar Rujukan UKS
               </h3>
               <p className="text-xs text-zinc-500">
@@ -223,7 +223,7 @@ Catatan: Dokumen ini diterbitkan oleh Sistem Skrining NADI untuk pendampingan ol
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#0071E3] hover:bg-blue-600 text-white text-xs font-semibold shadow-xs transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#0D9488] hover:bg-[#0F766E] text-white text-xs font-semibold shadow-xs transition-colors"
             >
               <Printer className="w-4 h-4" />
               <span>Cetak / Simpan PDF</span>

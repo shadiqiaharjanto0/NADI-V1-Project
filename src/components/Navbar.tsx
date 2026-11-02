@@ -4,14 +4,12 @@ import {
   MessageSquare,
   ClipboardList,
   BookOpen,
-  User,
   ShieldAlert,
   FileHeart,
   School,
   Stethoscope,
   GraduationCap,
   LogOut,
-  LayoutDashboard,
 } from 'lucide-react';
 import { StudentProfile, AuthUser } from '../types';
 
@@ -47,15 +45,15 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-zinc-200 no-print">
-      {/* Top Status Ticker - Apple Minimalist */}
-      <div className="bg-zinc-900 text-zinc-300 text-xs px-4 py-1.5 border-b border-zinc-800">
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 no-print">
+      {/* Top Status Ticker - Clinical Minimalist */}
+      <div className="bg-slate-900 text-slate-300 text-xs px-4 py-1.5 border-b border-slate-800">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-            <span className="font-medium text-white tracking-tight">NADI Health Intelligence</span>
-            <span className="text-zinc-600 hidden sm:inline">•</span>
-            <span className="text-zinc-400 hidden sm:inline text-[11px]">
+            <span className="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
+            <span className="font-semibold text-white tracking-tight">NADI Health Intelligence</span>
+            <span className="text-slate-600 hidden sm:inline">•</span>
+            <span className="text-slate-400 hidden sm:inline text-[11px]">
               Sistem Skrining Medis & Pengawasan Asrama Boarding School
             </span>
           </div>
@@ -63,18 +61,18 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="flex items-center gap-3 text-xs">
             {currentUser ? (
               <div className="flex items-center gap-2">
-                <span className="text-zinc-400 text-[11px] hidden md:inline">
+                <span className="text-slate-400 text-[11px] hidden md:inline">
                   Akun:
                 </span>
-                <span className="text-zinc-200 font-medium text-[11px] truncate max-w-[160px]">
+                <span className="text-slate-200 font-medium text-[11px] truncate max-w-[160px]">
                   {currentUser.name}
                 </span>
-                <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700">
+                <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded-md bg-slate-800 text-teal-300 border border-slate-700">
                   {getRoleLabel()}
                 </span>
                 <button
                   onClick={onLogout}
-                  className="inline-flex items-center gap-1 text-[11px] text-zinc-400 hover:text-white transition-colors ml-1"
+                  className="inline-flex items-center gap-1 text-[11px] text-slate-400 hover:text-white transition-colors ml-1"
                   title="Keluar dari akun saat ini"
                 >
                   <LogOut className="w-3 h-3" />
@@ -84,7 +82,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             ) : (
               <button
                 onClick={onOpenLogin}
-                className="text-[11px] text-[#0071E3] hover:underline font-medium"
+                className="text-[11px] text-[#0D9488] hover:underline font-semibold"
               >
                 Masuk Akun
               </button>
@@ -95,59 +93,43 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-14">
-          {/* Brand Logo */}
+          {/* Brand Logo - Headline NADI acts as Home (Beranda) */}
           <div className="flex items-center gap-3">
             <button
-              onClick={() => {
-                if (!currentUser) setActiveTab('landing');
-                else if (role === 'pembina') setActiveTab('dorm-monitor');
-                else if (role === 'nakes') setActiveTab('clinic-queue');
-                else setActiveTab('chat');
-              }}
-              className="flex items-center gap-2.5 text-left group"
+              onClick={() => setActiveTab('landing')}
+              className="flex items-center gap-2.5 text-left group p-1 -ml-1 rounded-lg hover:bg-slate-100 transition-colors"
+              title="Kembali ke Beranda"
             >
-              <div className="w-8 h-8 rounded-lg bg-zinc-900 text-white flex items-center justify-center font-bold text-sm tracking-tighter">
+              <div className="w-8 h-8 rounded-lg bg-[#0D9488] text-white flex items-center justify-center font-bold text-sm tracking-tighter shadow-2xs group-hover:bg-[#0F766E] transition-colors">
                 <Activity className="w-4 h-4 text-white" />
               </div>
               <div className="leading-tight">
                 <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-base tracking-tight text-zinc-900">
+                  <span className="font-bold text-base tracking-tight text-slate-900">
                     NADI
                   </span>
-                  <span className="text-[10px] font-mono text-zinc-500 uppercase">
+                  <span className="text-[10px] font-mono text-teal-700 font-semibold bg-teal-50 px-1.5 py-0.2 rounded border border-teal-200">
                     v1.0
                   </span>
                 </div>
-                <p className="text-[10px] text-zinc-500 font-normal">
-                  School Health Portal
+                <p className="text-[10px] text-slate-500 font-normal">
+                  Clinical Intelligence Portal
                 </p>
               </div>
             </button>
           </div>
 
-          {/* Desktop Navigation - Strictly Role-Scoped (RBAC) */}
-          <nav className="hidden md:flex items-center gap-1">
-            <button
-              onClick={() => setActiveTab('landing')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                activeTab === 'landing'
-                  ? 'bg-zinc-100 text-zinc-900 font-semibold'
-                  : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50'
-              }`}
-            >
-              <LayoutDashboard className="w-3.5 h-3.5" />
-              <span>Portal Beranda</span>
-            </button>
-
+          {/* Desktop Navigation - Simplified, Clinical Minimalist */}
+          <nav className="hidden md:flex items-center gap-1.5">
             {/* SISWA ONLY NAVIGATION */}
             {role === 'siswa' && (
               <>
                 <button
                   onClick={() => setActiveTab('chat')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                     activeTab === 'chat'
-                      ? 'bg-zinc-900 text-white font-semibold'
-                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50'
+                      ? 'bg-[#0D9488] text-white shadow-2xs'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   }`}
                 >
                   <MessageSquare className="w-3.5 h-3.5" />
@@ -156,10 +138,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 <button
                   onClick={() => setActiveTab('quick-triage')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                     activeTab === 'quick-triage'
-                      ? 'bg-zinc-900 text-white font-semibold'
-                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50'
+                      ? 'bg-[#0D9488] text-white shadow-2xs'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   }`}
                 >
                   <FileHeart className="w-3.5 h-3.5" />
@@ -168,16 +150,18 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 <button
                   onClick={() => setActiveTab('diary')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors relative ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors relative ${
                     activeTab === 'diary'
-                      ? 'bg-zinc-900 text-white font-semibold'
-                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50'
+                      ? 'bg-[#0D9488] text-white shadow-2xs'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   }`}
                 >
                   <ClipboardList className="w-3.5 h-3.5" />
                   <span>Buku Rekap Siswa</span>
                   {hasActiveRecordsCount > 0 && (
-                    <span className="w-4 h-4 rounded-full bg-zinc-800 text-white text-[9px] font-bold flex items-center justify-center tabular-nums">
+                    <span className={`w-4 h-4 rounded-full text-[9px] font-bold flex items-center justify-center tabular-nums ${
+                      activeTab === 'diary' ? 'bg-white text-teal-800' : 'bg-teal-100 text-teal-800'
+                    }`}>
                       {hasActiveRecordsCount}
                     </span>
                   )}
@@ -190,16 +174,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               <>
                 <button
                   onClick={() => setActiveTab('dorm-monitor')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                     activeTab === 'dorm-monitor'
-                      ? 'bg-zinc-900 text-white font-semibold'
-                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50'
+                      ? 'bg-[#0D9488] text-white shadow-2xs'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   }`}
                 >
                   <School className="w-3.5 h-3.5" />
                   <span>Monitoring Asrama</span>
                   {hasActiveRecordsCount > 0 && (
-                    <span className="w-4 h-4 rounded-full bg-zinc-800 text-white text-[9px] font-bold flex items-center justify-center tabular-nums">
+                    <span className={`w-4 h-4 rounded-full text-[9px] font-bold flex items-center justify-center tabular-nums ${
+                      activeTab === 'dorm-monitor' ? 'bg-white text-teal-800' : 'bg-teal-100 text-teal-800'
+                    }`}>
                       {hasActiveRecordsCount}
                     </span>
                   )}
@@ -207,10 +193,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 <button
                   onClick={() => setActiveTab('chat')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                     activeTab === 'chat'
-                      ? 'bg-zinc-900 text-white font-semibold'
-                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50'
+                      ? 'bg-[#0D9488] text-white shadow-2xs'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   }`}
                 >
                   <MessageSquare className="w-3.5 h-3.5" />
@@ -224,16 +210,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               <>
                 <button
                   onClick={() => setActiveTab('clinic-queue')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                     activeTab === 'clinic-queue'
-                      ? 'bg-zinc-900 text-white font-semibold'
-                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50'
+                      ? 'bg-[#0D9488] text-white shadow-2xs'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   }`}
                 >
                   <Stethoscope className="w-3.5 h-3.5" />
                   <span>Antrean & Rekam Medis UKS</span>
                   {hasActiveRecordsCount > 0 && (
-                    <span className="w-4 h-4 rounded-full bg-zinc-800 text-white text-[9px] font-bold flex items-center justify-center tabular-nums">
+                    <span className={`w-4 h-4 rounded-full text-[9px] font-bold flex items-center justify-center tabular-nums ${
+                      activeTab === 'clinic-queue' ? 'bg-white text-teal-800' : 'bg-teal-100 text-teal-800'
+                    }`}>
                       {hasActiveRecordsCount}
                     </span>
                   )}
@@ -241,10 +229,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 <button
                   onClick={() => setActiveTab('chat')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                     activeTab === 'chat'
-                      ? 'bg-zinc-900 text-white font-semibold'
-                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50'
+                      ? 'bg-[#0D9488] text-white shadow-2xs'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   }`}
                 >
                   <MessageSquare className="w-3.5 h-3.5" />
@@ -255,10 +243,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => setActiveTab('education')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                 activeTab === 'education'
-                  ? 'bg-zinc-900 text-white font-semibold'
-                  : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50'
+                  ? 'bg-[#0D9488] text-white shadow-2xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               }`}
             >
               <BookOpen className="w-3.5 h-3.5" />
@@ -272,10 +260,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             {currentUser ? (
               <button
                 onClick={onOpenProfile}
-                className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-zinc-200 hover:bg-zinc-50 text-left transition-colors"
+                className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50/50 hover:bg-slate-100 text-left transition-colors"
                 title="Buka Profil Pribadi"
               >
-                <div className="w-6 h-6 rounded-md bg-zinc-100 flex items-center justify-center text-zinc-700">
+                <div className="w-6 h-6 rounded-md bg-white border border-slate-200 flex items-center justify-center text-teal-700">
                   {role === 'siswa' ? (
                     <GraduationCap className="w-3.5 h-3.5" />
                   ) : role === 'pembina' ? (
@@ -285,10 +273,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   )}
                 </div>
                 <div className="hidden sm:block leading-none">
-                  <p className="text-xs font-semibold text-zinc-900 max-w-[120px] truncate">
+                  <p className="text-xs font-semibold text-slate-900 max-w-[120px] truncate">
                     {currentUser.name.split(' ')[0]}
                   </p>
-                  <p className="text-[10px] text-zinc-500 font-mono mt-0.5">
+                  <p className="text-[10px] text-slate-500 font-mono mt-0.5">
                     {role === 'siswa' ? studentProfile.dormRoom || 'Siswa' : getRoleLabel()}
                   </p>
                 </div>
@@ -298,7 +286,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Emergency SOS Button */}
             <button
               onClick={onOpenEmergency}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold shadow-xs transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold shadow-2xs transition-colors"
             >
               <ShieldAlert className="w-3.5 h-3.5" />
               <span>Darurat 119 / 112</span>
@@ -307,14 +295,13 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Mobile Navigation Bar */}
-        <div className="flex md:hidden items-center justify-between border-t border-zinc-100 py-2 text-xs overflow-x-auto gap-1">
+        <div className="flex md:hidden items-center justify-between border-t border-slate-100 py-2 text-xs overflow-x-auto gap-1">
           <button
             onClick={() => setActiveTab('landing')}
-            className={`px-2.5 py-1 rounded-md shrink-0 flex items-center gap-1 ${
-              activeTab === 'landing' ? 'bg-zinc-900 text-white font-medium' : 'text-zinc-600'
+            className={`px-2.5 py-1 rounded-md shrink-0 flex items-center gap-1 text-xs font-medium ${
+              activeTab === 'landing' ? 'bg-[#0D9488] text-white font-semibold' : 'text-slate-600'
             }`}
           >
-            <LayoutDashboard className="w-3 h-3" />
             <span>Beranda</span>
           </button>
 
@@ -322,8 +309,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             <>
               <button
                 onClick={() => setActiveTab('chat')}
-                className={`px-2.5 py-1 rounded-md shrink-0 flex items-center gap-1 ${
-                  activeTab === 'chat' ? 'bg-zinc-900 text-white font-medium' : 'text-zinc-600'
+                className={`px-2.5 py-1 rounded-md shrink-0 flex items-center gap-1 text-xs font-medium ${
+                  activeTab === 'chat' ? 'bg-[#0D9488] text-white font-semibold' : 'text-slate-600'
                 }`}
               >
                 <MessageSquare className="w-3 h-3" />
@@ -331,8 +318,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               </button>
               <button
                 onClick={() => setActiveTab('quick-triage')}
-                className={`px-2.5 py-1 rounded-md shrink-0 flex items-center gap-1 ${
-                  activeTab === 'quick-triage' ? 'bg-zinc-900 text-white font-medium' : 'text-zinc-600'
+                className={`px-2.5 py-1 rounded-md shrink-0 flex items-center gap-1 text-xs font-medium ${
+                  activeTab === 'quick-triage' ? 'bg-[#0D9488] text-white font-semibold' : 'text-slate-600'
                 }`}
               >
                 <FileHeart className="w-3 h-3" />
@@ -340,8 +327,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               </button>
               <button
                 onClick={() => setActiveTab('diary')}
-                className={`px-2.5 py-1 rounded-md shrink-0 flex items-center gap-1 ${
-                  activeTab === 'diary' ? 'bg-zinc-900 text-white font-medium' : 'text-zinc-600'
+                className={`px-2.5 py-1 rounded-md shrink-0 flex items-center gap-1 text-xs font-medium ${
+                  activeTab === 'diary' ? 'bg-[#0D9488] text-white font-semibold' : 'text-slate-600'
                 }`}
               >
                 <ClipboardList className="w-3 h-3" />
@@ -353,8 +340,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           {role === 'pembina' && (
             <button
               onClick={() => setActiveTab('dorm-monitor')}
-              className={`px-2.5 py-1 rounded-md shrink-0 flex items-center gap-1 ${
-                activeTab === 'dorm-monitor' ? 'bg-zinc-900 text-white font-medium' : 'text-zinc-600'
+              className={`px-2.5 py-1 rounded-md shrink-0 flex items-center gap-1 text-xs font-medium ${
+                activeTab === 'dorm-monitor' ? 'bg-[#0D9488] text-white font-semibold' : 'text-slate-600'
               }`}
             >
               <School className="w-3 h-3" />
@@ -365,8 +352,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           {role === 'nakes' && (
             <button
               onClick={() => setActiveTab('clinic-queue')}
-              className={`px-2.5 py-1 rounded-md shrink-0 flex items-center gap-1 ${
-                activeTab === 'clinic-queue' ? 'bg-zinc-900 text-white font-medium' : 'text-zinc-600'
+              className={`px-2.5 py-1 rounded-md shrink-0 flex items-center gap-1 text-xs font-medium ${
+                activeTab === 'clinic-queue' ? 'bg-[#0D9488] text-white font-semibold' : 'text-slate-600'
               }`}
             >
               <Stethoscope className="w-3 h-3" />
@@ -376,8 +363,8 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             onClick={() => setActiveTab('education')}
-            className={`px-2.5 py-1 rounded-md shrink-0 flex items-center gap-1 ${
-              activeTab === 'education' ? 'bg-zinc-900 text-white font-medium' : 'text-zinc-600'
+            className={`px-2.5 py-1 rounded-md shrink-0 flex items-center gap-1 text-xs font-medium ${
+              activeTab === 'education' ? 'bg-[#0D9488] text-white font-semibold' : 'text-slate-600'
             }`}
           >
             <BookOpen className="w-3 h-3" />

@@ -33,6 +33,15 @@ export interface ChatMessage {
   } | null;
 }
 
+export interface ChatSession {
+  id: string;
+  userId: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+  messages: ChatMessage[];
+}
+
 export const CLASSES_XII = ['XII-1', 'XII-2', 'XII-3', 'XII-4'] as const;
 export const CLASSES_XI = ['XI-1', 'XI-2', 'XI-3', 'XI-4', 'XI-5', 'XI-6'] as const;
 export const CLASSES_X = ['X-1', 'X-2', 'X-3', 'X-4', 'X-5', 'X-6'] as const;

@@ -83,24 +83,24 @@ Mohon berikan analisis klinis dan panduan penanganan sesuai standar NADI Health 
   return (
     <div className="max-w-3xl mx-auto w-full px-4 sm:px-6 py-8 space-y-6 no-print">
       {/* Title Card */}
-      <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-xs space-y-3">
+      <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-3">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center">
-            <FileHeart className="w-5 h-5 text-[#0071E3]" />
+          <div className="w-9 h-9 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center">
+            <FileHeart className="w-5 h-5 text-[#0D9488]" />
           </div>
           <div>
-            <h1 className="text-lg font-semibold text-zinc-900 tracking-tight">
+            <h1 className="text-lg font-semibold text-slate-800 tracking-tight">
               Skrining Mandiri Terpandu
             </h1>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-slate-500">
               Formulir terstruktur untuk mempermudah evaluasi NADI dan petugas medis UKS.
             </p>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-zinc-100 text-xs text-zinc-600 font-mono">
+        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100 text-xs text-slate-600 font-mono">
           <span>Identitas:</span>
-          <span className="font-semibold text-zinc-900">{studentProfile.name}</span>
+          <span className="font-semibold text-slate-800">{studentProfile.name}</span>
           <span>•</span>
           <span>{studentProfile.grade}</span>
           <span>•</span>
@@ -110,8 +110,8 @@ Mohon berikan analisis klinis dan panduan penanganan sesuai standar NADI Health 
 
       <form onSubmit={handleSubmit} className="space-y-6 text-xs">
         {/* Step 1: Category selection */}
-        <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-xs space-y-3">
-          <label className="font-semibold uppercase tracking-wider text-zinc-500 block text-[11px]">
+        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-3">
+          <label className="font-semibold uppercase tracking-wider text-slate-500 block text-[11px]">
             1. Pilih Kategori Keluhan:
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
@@ -122,12 +122,12 @@ Mohon berikan analisis klinis dan panduan penanganan sesuai standar NADI Health 
                 onClick={() => setCategory(c.id)}
                 className={`p-3 rounded-xl border text-left transition-colors ${
                   category === c.id
-                    ? 'bg-zinc-900 text-white border-zinc-900'
-                    : 'bg-white hover:bg-zinc-50 border-zinc-200 text-zinc-700'
+                    ? 'bg-[#0D9488] text-white border-[#0D9488]'
+                    : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-700'
                 }`}
               >
                 <p className="font-semibold">{c.label}</p>
-                <p className={`text-[11px] mt-0.5 ${category === c.id ? 'text-zinc-300' : 'text-zinc-500'}`}>
+                <p className={`text-[11px] mt-0.5 ${category === c.id ? 'text-teal-100' : 'text-slate-500'}`}>
                   {c.desc}
                 </p>
               </button>
@@ -189,13 +189,13 @@ Mohon berikan analisis klinis dan panduan penanganan sesuai standar NADI Health 
         </div>
 
         {/* Step 3: Details & Duration */}
-        <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-xs space-y-4">
-          <label className="font-semibold uppercase tracking-wider text-zinc-500 block text-[11px]">
+        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-4">
+          <label className="font-semibold uppercase tracking-wider text-slate-500 block text-[11px]">
             3. Rincian Keluhan & Riwayat:
           </label>
 
           <div>
-            <label className="block font-semibold text-zinc-700 mb-1">
+            <label className="block font-semibold text-slate-700 mb-1">
               Jelaskan apa yang kamu rasakan secara spesifik:
             </label>
             <textarea
@@ -203,19 +203,19 @@ Mohon berikan analisis klinis dan panduan penanganan sesuai standar NADI Health 
               value={complaintText}
               onChange={(e) => setComplaintText(e.target.value)}
               placeholder="Ceritakan rasa sakitnya, bagian tubuh mana yang sakit, apakah ada demam, batuk, pusing..."
-              className="w-full px-3 py-2.5 rounded-xl border border-zinc-300 text-zinc-900 focus:outline-hidden focus:border-[#0071E3] bg-white leading-relaxed"
+              className="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-slate-900 focus:outline-hidden focus:border-[#0D9488] bg-white leading-relaxed"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block font-semibold text-zinc-700 mb-1">
+              <label className="block font-semibold text-slate-700 mb-1">
                 Sejak Kapan Keluhan Muncul?
               </label>
               <select
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg border border-zinc-300 text-zinc-900 bg-white"
+                className="w-full px-3 py-2 rounded-lg border border-slate-300 text-slate-900 bg-white"
               >
                 <option value="Kurang dari 6 jam yang lalu">Kurang dari 6 jam yang lalu</option>
                 <option value="Hari ini (sejak pagi/siang)">Hari ini (sejak pagi/siang)</option>
@@ -226,7 +226,7 @@ Mohon berikan analisis klinis dan panduan penanganan sesuai standar NADI Health 
             </div>
 
             <div>
-              <label className="block font-semibold text-zinc-700 mb-1">
+              <label className="block font-semibold text-slate-700 mb-1">
                 Skala Rasa Sakit: <span className="font-mono">{severity} / 10</span>
               </label>
               <input
@@ -235,9 +235,9 @@ Mohon berikan analisis klinis dan panduan penanganan sesuai standar NADI Health 
                 max="10"
                 value={severity}
                 onChange={(e) => setSeverity(Number(e.target.value))}
-                className="w-full accent-[#0071E3] cursor-pointer"
+                className="w-full accent-[#0D9488] cursor-pointer"
               />
-              <div className="flex justify-between text-[10px] text-zinc-400 font-mono mt-0.5">
+              <div className="flex justify-between text-[10px] text-slate-400 font-mono mt-0.5">
                 <span>1 (Ringan)</span>
                 <span>5 (Sedang)</span>
                 <span>10 (Tak Tertahankan)</span>
@@ -246,7 +246,7 @@ Mohon berikan analisis klinis dan panduan penanganan sesuai standar NADI Health 
           </div>
 
           <div>
-            <label className="block font-semibold text-zinc-700 mb-1">
+            <label className="block font-semibold text-slate-700 mb-1">
               Tindakan Awal yang Sudah Dilakukan di Kamar Asrama:
             </label>
             <input
@@ -254,7 +254,7 @@ Mohon berikan analisis klinis dan panduan penanganan sesuai standar NADI Health 
               value={actionsTaken}
               onChange={(e) => setActionsTaken(e.target.value)}
               placeholder="misal: Minum air putih hangat, istirahat di tempat tidur kamar 204..."
-              className="w-full px-3 py-2 rounded-lg border border-zinc-300 text-zinc-900 bg-white"
+              className="w-full px-3 py-2 rounded-lg border border-slate-300 text-slate-900 bg-white"
             />
           </div>
         </div>
@@ -263,7 +263,7 @@ Mohon berikan analisis klinis dan panduan penanganan sesuai standar NADI Health 
         <div className="pt-2 flex justify-end">
           <button
             type="submit"
-            className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#0071E3] hover:bg-blue-600 text-white font-semibold shadow-xs transition-colors flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold shadow-xs transition-colors flex items-center justify-center gap-2"
           >
             <span>Kirim untuk Evaluasi Triase NADI</span>
             <ArrowRight className="w-4 h-4" />

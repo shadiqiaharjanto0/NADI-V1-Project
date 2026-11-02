@@ -116,15 +116,15 @@ export const EmergencySosModal: React.FC<EmergencySosModalProps> = ({
 
         <div className="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
           {/* Critical Location Call-out for Dispatch Operator */}
-          <div className="p-4 rounded-xl border border-zinc-200 bg-zinc-50 space-y-2">
+          <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-2">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-zinc-700">
-                <MapPin className="w-4 h-4 text-[#0071E3]" />
+              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-700">
+                <MapPin className="w-4 h-4 text-[#0D9488]" />
                 <span>Format Informasi Lokasi untuk Operator 112 / 119</span>
               </div>
               <button
                 onClick={handleCopyLocation}
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium text-[#0071E3] hover:bg-blue-50 transition-colors border border-blue-200"
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium text-[#0D9488] hover:bg-teal-50 transition-colors border border-teal-200"
               >
                 {copiedLocation ? (
                   <>
@@ -139,43 +139,43 @@ export const EmergencySosModal: React.FC<EmergencySosModalProps> = ({
                 )}
               </button>
             </div>
-            <p className="text-xs font-mono text-zinc-800 bg-white p-2.5 rounded-lg border border-zinc-200 leading-relaxed">
+            <p className="text-xs font-mono text-slate-800 bg-white p-2.5 rounded-lg border border-slate-200 leading-relaxed">
               &quot;{emergencyAddress}&quot;
             </p>
-            <p className="text-[11px] text-zinc-500">
+            <p className="text-[11px] text-slate-500">
               Bacakan teks di atas saat operator darurat menanyakan lokasi kejadian secara spesifik.
             </p>
           </div>
 
           {/* School Internal Emergency Hotlines */}
           <div className="space-y-3">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
               Hotline Siaga Internal Sekolah (24 Jam)
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {/* Petugas Medis UKS */}
-              <div className="p-4 rounded-xl border border-zinc-200 bg-white hover:border-zinc-300 transition-all flex flex-col justify-between space-y-3">
+              <div className="p-4 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all flex flex-col justify-between space-y-3">
                 <div className="space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-md bg-blue-50 text-[#0071E3] border border-blue-100">
+                    <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-md bg-teal-50 text-[#0D9488] border border-teal-100">
                       Pos Medis UKS
                     </span>
-                    <HeartPulse className="w-4 h-4 text-[#0071E3]" />
+                    <HeartPulse className="w-4 h-4 text-[#0D9488]" />
                   </div>
-                  <h4 className="text-sm font-semibold text-zinc-900">
+                  <h4 className="text-sm font-semibold text-slate-800">
                     Klinik & Pos Rawat UKS
                   </h4>
-                  <p className="text-xs text-zinc-500">
+                  <p className="text-xs text-slate-500">
                     Tenaga kesehatan siaga, ranjang observasi, dan oksigen darurat.
                   </p>
                 </div>
-                <div className="flex items-center justify-between pt-2 border-t border-zinc-100">
-                  <span className="font-mono text-xs font-medium text-zinc-800 tabular-nums">
+                <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                  <span className="font-mono text-xs font-medium text-slate-800 tabular-nums">
                     {studentProfile.uksContactPhone}
                   </span>
                   <a
                     href={`tel:${studentProfile.uksContactPhone.replace(/[^0-9]/g, '')}`}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0071E3] hover:bg-blue-600 text-white text-xs font-medium transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0D9488] hover:bg-[#0F766E] text-white text-xs font-medium transition-colors"
                   >
                     <PhoneCall className="w-3.5 h-3.5" />
                     <span>Panggil UKS</span>

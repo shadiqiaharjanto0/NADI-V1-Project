@@ -143,17 +143,17 @@ export const NakesDashboard: React.FC<NakesDashboardProps> = ({
   return (
     <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 space-y-6">
       {/* Top Clinic Header - Apple Minimalist */}
-      <div className="bg-white rounded-2xl border border-zinc-200 p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 no-print">
+      <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 no-print">
         <div className="space-y-1">
-          <div className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-zinc-500">
-            <Stethoscope className="w-3.5 h-3.5 text-[#0071E3]" />
+          <div className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-slate-500">
+            <Stethoscope className="w-3.5 h-3.5 text-[#0D9488]" />
             <span>Unit Kesehatan Sekolah • Pos Medis Asrama</span>
           </div>
-          <h1 className="text-xl font-semibold tracking-tight text-zinc-900">
+          <h1 className="text-xl font-semibold tracking-tight text-slate-800">
             Dasbor Tenaga Kesehatan UKS
           </h1>
-          <p className="text-xs text-zinc-500">
-            Petugas Jaga: <strong className="text-zinc-800">{currentUser.name}</strong> ({currentUser.identifier})
+          <p className="text-xs text-slate-500">
+            Petugas Jaga: <strong className="text-slate-800">{currentUser.name}</strong> ({currentUser.identifier})
           </p>
         </div>
 
@@ -291,8 +291,8 @@ export const NakesDashboard: React.FC<NakesDashboardProps> = ({
                     onClick={() => setFilterStatus(st)}
                     className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-colors ${
                       filterStatus === st
-                        ? 'bg-zinc-900 text-white font-semibold'
-                        : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
+                        ? 'bg-[#0D9488] text-white font-semibold'
+                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                     }`}
                   >
                     {st}
@@ -303,46 +303,56 @@ export const NakesDashboard: React.FC<NakesDashboardProps> = ({
 
             {/* Queue List */}
             <div className="space-y-2">
-              {filteredRecords.map((rec) => {
-                const isSelected = selectedRecord?.id === rec.id;
-                return (
-                  <button
-                    key={rec.id}
-                    onClick={() => setSelectedRecordId(rec.id)}
-                    className={`w-full p-4 rounded-xl text-left border transition-all ${
-                      isSelected
-                        ? 'bg-white border-zinc-900 ring-1 ring-zinc-900 shadow-xs'
-                        : 'bg-white hover:bg-zinc-50 border-zinc-200'
-                    }`}
-                  >
-                    <div className="flex items-start justify-between gap-2 mb-1">
-                      <div>
-                        <h3 className="font-semibold text-xs sm:text-sm text-zinc-900 line-clamp-1">
-                          {rec.studentName || 'Shadiqia Fattaraditya Harjanto'}
-                        </h3>
-                        <p className="text-[11px] text-zinc-500 font-mono">
-                          {rec.dormBuilding || 'Astra 1'} • {rec.dormRoom} • {rec.grade || 'XII-1'}
-                        </p>
+              {filteredRecords.length === 0 ? (
+                <div className="bg-white p-6 rounded-xl border border-slate-200 text-center space-y-2">
+                  <CheckCircle2 className="w-8 h-8 text-slate-400 mx-auto" />
+                  <h4 className="font-semibold text-xs text-slate-800">Belum Ada Antrean Pasien</h4>
+                  <p className="text-[11px] text-slate-500 leading-relaxed">
+                    Database register saat ini kosong. Data akan masuk otomatis saat siswa/siswi melakukan skrining atau dirujuk ke pos UKS.
+                  </p>
+                </div>
+              ) : (
+                filteredRecords.map((rec) => {
+                  const isSelected = selectedRecord?.id === rec.id;
+                  return (
+                    <button
+                      key={rec.id}
+                      onClick={() => setSelectedRecordId(rec.id)}
+                      className={`w-full p-4 rounded-xl text-left border transition-all ${
+                        isSelected
+                          ? 'bg-white border-[#0D9488] ring-1 ring-[#0D9488] shadow-xs'
+                          : 'bg-white hover:bg-slate-50 border-slate-200'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <div>
+                          <h3 className="font-semibold text-xs sm:text-sm text-zinc-900 line-clamp-1">
+                            {rec.studentName || 'Shadiqia Fattaraditya Harjanto'}
+                          </h3>
+                          <p className="text-[11px] text-zinc-500 font-mono">
+                            {rec.dormBuilding || 'Astra 1'} • {rec.dormRoom} • {rec.grade || 'XII-1'}
+                          </p>
+                        </div>
+                        <TriageBadge level={rec.triageLevel} size="sm" />
                       </div>
-                      <TriageBadge level={rec.triageLevel} size="sm" />
-                    </div>
 
-                    <p className="text-xs text-zinc-600 line-clamp-2 leading-relaxed mb-2">
-                      {rec.complaintTitle}
-                    </p>
+                      <p className="text-xs text-zinc-600 line-clamp-2 leading-relaxed mb-2">
+                        {rec.complaintTitle}
+                      </p>
 
-                    <div className="flex items-center justify-between text-[11px] text-zinc-500 pt-2 border-t border-zinc-100">
-                      <span className="flex items-center gap-1 font-mono tabular-nums">
-                        <Thermometer className="w-3.5 h-3.5 text-zinc-500" />
-                        {rec.vitalSigns?.temperature || '37.0°C'}
-                      </span>
-                      <span className="px-1.5 py-0.5 rounded text-[10px] font-mono uppercase bg-zinc-100 text-zinc-700">
-                        {rec.status}
-                      </span>
-                    </div>
-                  </button>
-                );
-              })}
+                      <div className="flex items-center justify-between text-[11px] text-zinc-500 pt-2 border-t border-zinc-100">
+                        <span className="flex items-center gap-1 font-mono tabular-nums">
+                          <Thermometer className="w-3.5 h-3.5 text-zinc-500" />
+                          {rec.vitalSigns?.temperature || '37.0°C'}
+                        </span>
+                        <span className="px-1.5 py-0.5 rounded text-[10px] font-mono uppercase bg-zinc-100 text-zinc-700">
+                          {rec.status}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })
+              )}
             </div>
           </div>
 
@@ -417,7 +427,7 @@ export const NakesDashboard: React.FC<NakesDashboardProps> = ({
                 <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-zinc-100 no-print">
                   <button
                     onClick={() => setIsExamModalOpen(true)}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#0071E3] hover:bg-blue-600 text-white font-semibold text-xs shadow-xs transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold text-xs shadow-xs transition-colors"
                   >
                     <HeartPulse className="w-3.5 h-3.5" />
                     <span>Input Pemeriksaan Fisik & Resep UKS</span>
@@ -439,9 +449,9 @@ export const NakesDashboard: React.FC<NakesDashboardProps> = ({
                       };
                       onOpenUksSlip(slip);
                     }}
-                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-800 border border-zinc-300 font-medium text-xs transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-medium text-xs transition-colors"
                   >
-                    <FileText className="w-3.5 h-3.5 text-zinc-600" />
+                    <FileText className="w-3.5 h-3.5 text-slate-600" />
                     <span>Cetak Surat Rujukan</span>
                   </button>
 
@@ -458,11 +468,11 @@ export const NakesDashboard: React.FC<NakesDashboardProps> = ({
                 {isExamModalOpen && (
                   <form
                     onSubmit={handleSaveClinicalExam}
-                    className="p-5 rounded-xl bg-zinc-50 border border-zinc-200 space-y-4 text-xs no-print"
+                    className="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-4 text-xs no-print"
                   >
                     <div className="flex items-center justify-between">
-                      <h3 className="font-semibold text-zinc-900 uppercase tracking-wide flex items-center gap-1.5">
-                        <Stethoscope className="w-4 h-4 text-[#0071E3]" />
+                      <h3 className="font-semibold text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
+                        <Stethoscope className="w-4 h-4 text-[#0D9488]" />
                         <span>Form Pemeriksaan Fisik & Terapi Obat UKS</span>
                       </h3>
                       <button
@@ -545,20 +555,20 @@ export const NakesDashboard: React.FC<NakesDashboardProps> = ({
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-2 border-t border-zinc-200">
-                      <label className="flex items-center gap-2 text-zinc-700 font-medium cursor-pointer">
+                    <div className="flex items-center justify-between pt-2 border-t border-slate-200">
+                      <label className="flex items-center gap-2 text-slate-700 font-medium cursor-pointer">
                         <input
                           type="checkbox"
                           checked={isObservingInUKS}
                           onChange={(e) => setIsObservingInUKS(e.target.checked)}
-                          className="rounded text-[#0071E3] accent-[#0071E3]"
+                          className="rounded text-[#0D9488] accent-[#0D9488]"
                         />
                         <span>Rawat Observasi di Ruang Bed UKS</span>
                       </label>
 
                       <button
                         type="submit"
-                        className="px-4 py-2 bg-[#0071E3] hover:bg-blue-600 text-white font-semibold rounded-lg shadow-xs transition-colors"
+                        className="px-4 py-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold rounded-lg shadow-xs transition-colors"
                       >
                         Simpan Hasil Pemeriksaan
                       </button>
@@ -566,7 +576,15 @@ export const NakesDashboard: React.FC<NakesDashboardProps> = ({
                   </form>
                 )}
               </div>
-            ) : null}
+            ) : (
+              <div className="bg-white p-8 rounded-2xl border border-zinc-200 text-center space-y-3">
+                <Stethoscope className="w-8 h-8 text-zinc-400 mx-auto" />
+                <h3 className="font-semibold text-sm text-zinc-900">Rekam Medis UKS Siap Digunakan</h3>
+                <p className="text-xs text-zinc-500 max-w-sm mx-auto leading-relaxed">
+                  Pilih salah satu antrean pasien di sebelah kiri atau tunggu hasil skrining mandiri siswa/siswi untuk melakukan pemeriksaan klinis dan resep obat.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       )}

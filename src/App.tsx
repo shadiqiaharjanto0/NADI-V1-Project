@@ -19,16 +19,20 @@ import {
   UKSReferralSlip,
   AuthUser,
   UserRole,
+  ChatSession,
 } from './types';
 import {
   getStoredProfile,
   saveStoredProfile,
   getStoredRecords,
   saveStoredRecords,
-  getStoredChat,
-  saveStoredChat,
   getStoredAuthUser,
   saveStoredAuthUser,
+  getUserChatSessions,
+  saveUserChatSessions,
+  getActiveSessionId,
+  saveActiveSessionId,
+  getGreetingForUser,
   DEMO_USERS,
 } from './utils/storage';
 import { getOfflineTriageFallback } from './utils/triageFallback';
@@ -87,9 +91,15 @@ export default function App() {
   // Stored state
   const [profile, setProfile] = useState<StudentProfile>(getStoredProfile);
   const [records, setRecords] = useState<HealthRecord[]>(getStoredRecords);
-  const [messages, setMessages] = useState<ChatMessage[]>(() => {
-    const stored = getStoredChat();
-    return stored.length > 0 ? stored : [INITIAL_GREETING];
+
+  // Per-account chat sessions
+  const currentUserKey = currentUser?.id || currentUser?.username || 'tamu-umum';
+  const [sessions, setSessions] = useState<ChatSession[]>(() =>
+    getUserChatSessions(currentUserKey, currentUser?.role, currentUser?.name)
+  );
+  const [activeSessionId, setActiveSessionId] = useState<string>(() => {
+    const saved = getActiveSessionId(currentUserKey);
+    return saved && sessions.some((s) => s.id === saved) ? saved : sessions[0]?.id || `sess-${Date.now()}`;
   });
 
   // UI state
@@ -100,7 +110,36 @@ export default function App() {
   const [activeSlip, setActiveSlip] = useState<UKSReferralSlip | null>(null);
   const [isSlipModalOpen, setIsSlipModalOpen] = useState(false);
 
-  // Sync to localStorage
+  // When currentUser changes (user logs in, registers, switches account, or logs out):
+  // Load that specific account's private chat sessions so other accounts' chats are NEVER visible!
+  useEffect(() => {
+    const key = currentUser?.id || currentUser?.username || 'tamu-umum';
+    const userSessions = getUserChatSessions(key, currentUser?.role, currentUser?.name);
+    setSessions(userSessions);
+    const savedActive = getActiveSessionId(key);
+    const validActive =
+      savedActive && userSessions.some((s) => s.id === savedActive)
+        ? savedActive
+        : userSessions[0]?.id || `sess-${Date.now()}`;
+    setActiveSessionId(validActive);
+  }, [currentUser?.id, currentUser?.username]);
+
+  // Sync sessions whenever they change for the current user
+  useEffect(() => {
+    if (sessions.length > 0) {
+      const key = currentUser?.id || currentUser?.username || 'tamu-umum';
+      saveUserChatSessions(key, sessions);
+    }
+  }, [sessions, currentUser?.id, currentUser?.username]);
+
+  useEffect(() => {
+    if (activeSessionId) {
+      const key = currentUser?.id || currentUser?.username || 'tamu-umum';
+      saveActiveSessionId(key, activeSessionId);
+    }
+  }, [activeSessionId, currentUser?.id, currentUser?.username]);
+
+  // Sync auth user, profile, and records
   useEffect(() => {
     saveStoredAuthUser(currentUser);
   }, [currentUser]);
@@ -113,9 +152,9 @@ export default function App() {
     saveStoredRecords(records);
   }, [records]);
 
-  useEffect(() => {
-    saveStoredChat(messages);
-  }, [messages]);
+  // Active session and active messages
+  const activeSession = sessions.find((s) => s.id === activeSessionId) || sessions[0];
+  const messages = activeSession?.messages || [];
 
   // Handle Login & Role Switch
   const handleLogin = (user: AuthUser) => {
@@ -154,20 +193,35 @@ export default function App() {
       timestamp: new Date().toISOString(),
     };
 
-    const newMessages = [...messages, userMsg];
-    setMessages(newMessages);
+    // Append to active session and update session title if first user message
+    setSessions((prev) =>
+      prev.map((s) => {
+        if (s.id !== activeSessionId) return s;
+        const isFirst = s.messages.filter((m) => m.role === 'user').length === 0;
+        const newTitle = isFirst ? (text.length > 28 ? text.slice(0, 28) + '...' : text) : s.title;
+        return {
+          ...s,
+          title: newTitle,
+          updatedAt: new Date().toISOString(),
+          messages: [...s.messages, userMsg],
+        };
+      })
+    );
+
     setIsLoading(true);
+
+    const sessionMessages = [...messages, userMsg];
 
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000);
+      const timeoutId = setTimeout(() => controller.abort(), 12000);
 
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         signal: controller.signal,
         body: JSON.stringify({
-          messages: newMessages.map((m) => ({
+          messages: sessionMessages.map((m) => ({
             role: m.role,
             text: m.text,
           })),
@@ -190,7 +244,16 @@ export default function App() {
         triageLevel: data.triageLevel,
       };
 
-      setMessages((prev) => [...prev, modelMsg]);
+      setSessions((prev) =>
+        prev.map((s) => {
+          if (s.id !== activeSessionId) return s;
+          return {
+            ...s,
+            updatedAt: new Date().toISOString(),
+            messages: [...s.messages, modelMsg],
+          };
+        })
+      );
 
       // If Emergency Red is detected by AI, open emergency modal
       if (data.triageLevel === 'MERAH') {
@@ -206,7 +269,17 @@ export default function App() {
         timestamp: new Date().toISOString(),
         triageLevel: fallbackResult.triageLevel,
       };
-      setMessages((prev) => [...prev, fallbackMsg]);
+
+      setSessions((prev) =>
+        prev.map((s) => {
+          if (s.id !== activeSessionId) return s;
+          return {
+            ...s,
+            updatedAt: new Date().toISOString(),
+            messages: [...s.messages, fallbackMsg],
+          };
+        })
+      );
 
       if (fallbackResult.triageLevel === 'MERAH') {
         setIsEmergencyModalOpen(true);
@@ -217,23 +290,77 @@ export default function App() {
   };
 
   const handleClearChat = () => {
-    if (window.confirm('Mulai sesi skrining baru dengan NADI? Riwayat percakapan sebelumnya akan dibersihkan.')) {
-      setMessages([INITIAL_GREETING]);
+    if (window.confirm('Bersihkan percakapan sesi ini?')) {
+      const freshGreeting = getGreetingForUser(currentUser?.role, currentUser?.name);
+      setSessions((prev) =>
+        prev.map((s) => {
+          if (s.id !== activeSessionId) return s;
+          return {
+            ...s,
+            title: 'Sesi Skrining',
+            updatedAt: new Date().toISOString(),
+            messages: [freshGreeting],
+          };
+        })
+      );
     }
   };
 
-  // Add Health Record
+  const handleCreateNewSession = () => {
+    const freshGreeting = getGreetingForUser(currentUser?.role, currentUser?.name);
+    const newSession: ChatSession = {
+      id: `sess-${Date.now()}`,
+      userId: currentUserKey,
+      title: 'Sesi Skrining Baru',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      messages: [freshGreeting],
+    };
+    setSessions((prev) => [newSession, ...prev]);
+    setActiveSessionId(newSession.id);
+  };
+
+  const handleDeleteSession = (sessionId: string) => {
+    setSessions((prev) => {
+      const filtered = prev.filter((s) => s.id !== sessionId);
+      if (filtered.length === 0) {
+        const fresh = getUserChatSessions(currentUserKey, currentUser?.role, currentUser?.name);
+        setActiveSessionId(fresh[0].id);
+        return fresh;
+      }
+      if (activeSessionId === sessionId) {
+        setActiveSessionId(filtered[0].id);
+      }
+      return filtered;
+    });
+  };
+
+  // Add Health Record (Synchronized across all roles: Siswa, Nakes, Pembina)
   const handleAddRecord = (recordData: Omit<HealthRecord, 'id' | 'updates'>) => {
+    const studentName = currentUser?.role === 'siswa' ? currentUser.name : profile.name;
+    const grade = currentUser?.role === 'siswa' && currentUser.title?.includes('XII-1') ? 'XII-1' : profile.grade || 'XII-1';
+    const dormBuilding = currentUser?.building || profile.dormBuilding || 'Astra 1';
+    const dormRoom = currentUser?.dormRoom || profile.dormRoom || 'Kamar 204';
+
     const newRecord: HealthRecord = {
       ...recordData,
       id: `rec-${Date.now()}`,
       studentId: currentUser?.id || 'user-siswa-1',
-      studentName: currentUser?.role === 'siswa' ? currentUser.name : profile.name,
-      grade: profile.grade,
-      dormRoom: profile.dormRoom,
-      dormBuilding: profile.dormBuilding,
-      updates: [],
+      studentName,
+      grade,
+      dormRoom,
+      dormBuilding,
+      updates: [
+        {
+          id: `up-${Date.now()}`,
+          timestamp: new Date().toISOString(),
+          authorRole: currentUser?.role || 'siswa',
+          authorName: currentUser?.name || studentName,
+          note: `Keluhan dicatat ke sistem rekam medis (${recordData.complaintTitle}).`,
+        },
+      ],
     };
+
     setRecords((prev) => [newRecord, ...prev]);
   };
 
@@ -258,7 +385,7 @@ export default function App() {
             {
               id: `up-${Date.now()}`,
               timestamp: new Date().toISOString(),
-              authorRole: currentUser?.role || 'siswa',
+              authorRole: currentUser?.role || 'pembina',
               authorName: currentUser?.name || profile.name,
               note: updateNote,
               statusChange: newStatus,
@@ -290,7 +417,7 @@ export default function App() {
   const isAuthorized = isTabAuthorized(activeTab, currentUser?.role);
 
   return (
-    <div className="min-h-screen bg-[#FBFBFD] flex flex-col text-zinc-900 font-sans selection:bg-blue-100 selection:text-blue-900">
+    <div className="min-h-screen bg-[#F8FAFC] flex flex-col text-slate-800 font-sans selection:bg-teal-100 selection:text-teal-900">
       {/* Navigation Bar */}
       <Navbar
         activeTab={activeTab}
@@ -351,10 +478,16 @@ export default function App() {
                 isLoading={isLoading}
                 onClearChat={handleClearChat}
                 studentProfile={profile}
+                currentUser={currentUser}
                 onOpenUksSlip={handleOpenUksSlip}
                 onSaveToDiary={handleAddRecord}
                 onTriggerEmergency={() => setIsEmergencyModalOpen(true)}
                 onNavigateToQuickTriage={() => setActiveTab('quick-triage')}
+                sessions={sessions}
+                activeSessionId={activeSessionId}
+                onSelectSession={(id) => setActiveSessionId(id)}
+                onCreateNewSession={handleCreateNewSession}
+                onDeleteSession={handleDeleteSession}
               />
             )}
 
@@ -371,7 +504,11 @@ export default function App() {
             {activeTab === 'diary' && currentUser?.role === 'siswa' && (
               <HealthDiaryView
                 records={records.filter(
-                  (r) => !r.studentId || r.studentId === currentUser?.id || r.studentName === profile.name
+                  (r) =>
+                    !r.studentId ||
+                    r.studentId === currentUser?.id ||
+                    r.studentName === profile.name ||
+                    (currentUser?.name && r.studentName === currentUser.name)
                 )}
                 onAddRecord={handleAddRecord}
                 onUpdateRecord={handleUpdateRecord}

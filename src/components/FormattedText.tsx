@@ -6,28 +6,48 @@ export interface InlineFormatOptions {
 }
 
 /**
- * Parses inline text containing markdown symbols:
- * - **bold** or __bold__ -> <strong>
- * - *italic* or _italic_ -> <em>
- * - `code` -> <code>
- * - Automatically strips any stray or unclosed ** or __ to prevent raw asterisks from showing
+ * Robust inline text formatter:
+ * - Accurately converts **text** and __text__ to <strong>
+ * - Accurately converts *text* and _text_ to <em>
+ * - Accurately converts `code` to <code>
+ * - Strips any stray or unclosed ** or __ so raw asterisks NEVER leak to the UI
  */
 export function renderInlineFormatted(
-  text: string,
+  rawText: string,
   options?: InlineFormatOptions
 ): React.ReactNode {
-  if (!text) return null;
+  if (!rawText) return null;
+
+  // Normalize non-breaking spaces to standard space
+  const text = rawText.replace(/\u00A0/g, ' ');
 
   const boldClass =
     options?.boldClassName ||
-    (options?.isDark ? 'font-semibold text-white' : 'font-semibold text-zinc-900');
+    (options?.isDark ? 'font-bold text-white' : 'font-bold text-slate-900');
 
-  // Tokenize without nested capturing groups
-  const tokenRegex = /(\*\*[^*]+?\*\*|__[^_]+?__|\*[^*]+?\*|_[^_]+?_|`[^`]+?`)/g;
+  // Tokenize bold, italic, and inline code with a deterministic regex
+  // Match:
+  // 1. `code`
+  // 2. **bold** or __bold__
+  // 3. *italic* or _italic_
+  const tokenRegex = /(`[^`]+?`|\*\*(?:[^*]|\*(?!\*))+?\*\*|__(?:[^_]|_(?!_))+?__|\*[^*]+?\*|_[^_]+?_)/g;
   const parts = text.split(tokenRegex);
 
   return parts.map((part, index) => {
     if (!part) return null;
+
+    // Inline code (`text`)
+    if (part.startsWith('`') && part.endsWith('`') && part.length >= 2) {
+      const content = part.slice(1, -1);
+      return (
+        <code
+          key={index}
+          className="px-1.5 py-0.5 rounded bg-slate-100 text-teal-800 font-mono text-[11px] border border-slate-200"
+        >
+          {content}
+        </code>
+      );
+    }
 
     // Bold (**text**)
     if (part.startsWith('**') && part.endsWith('**') && part.length >= 4) {
@@ -50,47 +70,37 @@ export function renderInlineFormatted(
     }
 
     // Italic (*text*)
-    if (part.startsWith('*') && part.endsWith('*') && part.length >= 2) {
+    if (part.startsWith('*') && part.endsWith('*') && part.length >= 2 && !part.startsWith('**')) {
       const content = part.slice(1, -1).trim();
       return (
-        <em key={index} className="italic">
+        <em key={index} className="italic text-slate-700">
           {content}
         </em>
       );
     }
 
     // Italic (_text_)
-    if (part.startsWith('_') && part.endsWith('_') && part.length >= 2) {
+    if (part.startsWith('_') && part.endsWith('_') && part.length >= 2 && !part.startsWith('__')) {
       const content = part.slice(1, -1).trim();
       return (
-        <em key={index} className="italic">
+        <em key={index} className="italic text-slate-700">
           {content}
         </em>
       );
     }
 
-    // Code (`text`)
-    if (part.startsWith('`') && part.endsWith('`') && part.length >= 2) {
-      const content = part.slice(1, -1);
-      return (
-        <code
-          key={index}
-          className="px-1.5 py-0.5 rounded bg-zinc-100 text-zinc-800 font-mono text-xs"
-        >
-          {content}
-        </code>
-      );
-    }
+    // Regular text: ALWAYS strip any stray unclosed ** or __ or excessive asterisks
+    const cleaned = part
+      .replace(/\*\*/g, '')
+      .replace(/__/g, '')
+      .replace(/\*{3,}/g, '');
 
-    // Regular text: strip any stray unclosed ** or __ so raw asterisks are never shown
-    const sanitized = part.replace(/\*\*/g, '').replace(/__/g, '');
-    return <span key={index}>{sanitized}</span>;
+    return <span key={index}>{cleaned}</span>;
   });
 }
 
 /**
  * Strips all markdown markers and returns clean plain text
- * (Useful for exports, slips, or raw text inputs)
  */
 export function stripMarkdown(text: string): string {
   if (!text) return '';
@@ -137,8 +147,9 @@ interface ListBlock {
 }
 
 /**
- * Comprehensive Markdown Renderer for chat messages and medical guidance.
- * Handles headings, numbered lists, bullet points, and paragraphs with Apple-minimalist styling.
+ * Clinical Minimalist Markdown Renderer.
+ * Properly renders headings, ordered lists, bullet points, and paragraphs
+ * ensuring all bold items are genuinely bold without asterisks.
  */
 export const MarkdownMessage: React.FC<MarkdownMessageProps> = ({
   content,
@@ -147,7 +158,6 @@ export const MarkdownMessage: React.FC<MarkdownMessageProps> = ({
 }) => {
   if (!content) return null;
 
-  // Split content into lines
   const lines = content.split('\n');
   const blocks: React.ReactNode[] = [];
 
@@ -163,12 +173,12 @@ export const MarkdownMessage: React.FC<MarkdownMessageProps> = ({
       blocks.push(
         <ol key={listKey} className="space-y-2 my-2.5 pl-0 list-none">
           {currentList.items.map((item, idx) => (
-            <li key={idx} className="flex items-start gap-2.5 leading-relaxed">
+            <li key={idx} className="flex items-start gap-2.5 leading-relaxed text-slate-700">
               <span
-                className={`flex items-center justify-center w-5 h-5 rounded-full text-[11px] font-mono font-semibold shrink-0 mt-0.5 ${
+                className={`flex items-center justify-center w-5 h-5 rounded-md text-[11px] font-mono font-bold shrink-0 mt-0.5 ${
                   isDark
-                    ? 'bg-zinc-800 text-zinc-300 border border-zinc-700'
-                    : 'bg-zinc-100 text-zinc-700 border border-zinc-200'
+                    ? 'bg-slate-800 text-teal-300 border border-slate-700'
+                    : 'bg-teal-50 text-teal-800 border border-teal-200'
                 }`}
               >
                 {item.num ?? idx + 1}
@@ -184,10 +194,10 @@ export const MarkdownMessage: React.FC<MarkdownMessageProps> = ({
       blocks.push(
         <ul key={listKey} className="space-y-1.5 my-2.5 pl-1 list-none">
           {currentList.items.map((item, idx) => (
-            <li key={idx} className="flex items-start gap-2 leading-relaxed">
+            <li key={idx} className="flex items-start gap-2 leading-relaxed text-slate-700">
               <span
                 className={`w-1.5 h-1.5 rounded-full shrink-0 mt-2 ${
-                  isDark ? 'bg-zinc-400' : 'bg-zinc-500'
+                  isDark ? 'bg-teal-400' : 'bg-teal-600'
                 }`}
               />
               <div className="flex-1">
@@ -238,7 +248,7 @@ export const MarkdownMessage: React.FC<MarkdownMessageProps> = ({
       continue;
     }
 
-    // If regular line, flush any active list
+    // Regular line, flush any active list
     flushList();
 
     // Headings (### or ## or #)
@@ -246,8 +256,8 @@ export const MarkdownMessage: React.FC<MarkdownMessageProps> = ({
       blocks.push(
         <h5
           key={`h5-${blockKey++}`}
-          className={`font-semibold text-xs uppercase tracking-wider mt-3 mb-1.5 ${
-            isDark ? 'text-zinc-200' : 'text-zinc-900'
+          className={`font-bold text-xs uppercase tracking-wider mt-3 mb-1.5 ${
+            isDark ? 'text-teal-300' : 'text-slate-900'
           }`}
         >
           {renderInlineFormatted(trimmed.slice(4), { isDark })}
@@ -261,8 +271,8 @@ export const MarkdownMessage: React.FC<MarkdownMessageProps> = ({
       blocks.push(
         <h4
           key={`h4-${blockKey++}`}
-          className={`font-semibold text-sm mt-3.5 mb-1.5 ${
-            isDark ? 'text-white' : 'text-zinc-900'
+          className={`font-bold text-sm mt-3.5 mb-1.5 ${
+            isDark ? 'text-white' : 'text-slate-900'
           }`}
         >
           {renderInlineFormatted(headingText, { isDark })}
@@ -277,8 +287,8 @@ export const MarkdownMessage: React.FC<MarkdownMessageProps> = ({
       blocks.push(
         <div
           key={`lead-bold-${blockKey++}`}
-          className={`font-semibold text-xs sm:text-sm tracking-tight mt-2.5 mb-1 ${
-            isDark ? 'text-white' : 'text-zinc-900'
+          className={`font-bold text-xs sm:text-sm tracking-tight mt-2.5 mb-1 ${
+            isDark ? 'text-white' : 'text-slate-900'
           }`}
         >
           {headingText}
@@ -291,8 +301,8 @@ export const MarkdownMessage: React.FC<MarkdownMessageProps> = ({
     blocks.push(
       <p
         key={`p-${blockKey++}`}
-        className={`leading-relaxed my-1.5 ${
-          isDark ? 'text-zinc-200' : 'text-zinc-800'
+        className={`leading-relaxed my-1.5 text-slate-800 ${
+          isDark ? 'text-slate-200' : 'text-slate-800'
         }`}
       >
         {renderInlineFormatted(trimmed, { isDark })}

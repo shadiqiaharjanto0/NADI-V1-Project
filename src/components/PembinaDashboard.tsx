@@ -110,17 +110,17 @@ export const PembinaDashboard: React.FC<PembinaDashboardProps> = ({
   return (
     <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 space-y-6">
       {/* Top Header Card - Apple Minimalist */}
-      <div className="bg-white rounded-2xl border border-zinc-200 p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 no-print">
+      <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 no-print">
         <div className="space-y-1">
-          <div className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-zinc-500">
-            <School className="w-3.5 h-3.5 text-[#0071E3]" />
+          <div className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-slate-500">
+            <School className="w-3.5 h-3.5 text-[#0D9488]" />
             <span>Pengawasan Hunian Kamar & Dispensasi Belajar</span>
           </div>
-          <h1 className="text-xl font-semibold tracking-tight text-zinc-900">
+          <h1 className="text-xl font-semibold tracking-tight text-slate-800">
             Monitoring Kesehatan Gedung Asrama
           </h1>
-          <p className="text-xs text-zinc-500">
-            Wali Asrama: <strong className="text-zinc-800">{currentUser.name}</strong> • Wilayah Pengawasan: <strong className="text-zinc-800">{currentUser.building || 'Astra 1 (Kelas XII)'}</strong>
+          <p className="text-xs text-slate-500">
+            Wali Asrama: <strong className="text-slate-800">{currentUser.name}</strong> • Wilayah Pengawasan: <strong className="text-slate-800">{currentUser.building || 'Astra 1 (Kelas XII)'}</strong>
           </p>
         </div>
 
@@ -283,7 +283,16 @@ export const PembinaDashboard: React.FC<PembinaDashboardProps> = ({
 
           {/* Records List */}
           <div className="space-y-2">
-            {filteredRecords.map((rec) => {
+            {filteredRecords.length === 0 ? (
+              <div className="bg-white p-6 rounded-xl border border-zinc-200 text-center space-y-2">
+                <CheckCircle2 className="w-8 h-8 text-zinc-400 mx-auto" />
+                <h4 className="font-semibold text-xs text-zinc-900">Seluruh Siswa/Siswi Kondisi Sehat</h4>
+                <p className="text-[11px] text-zinc-500 leading-relaxed">
+                  Tidak ada laporan siswa/siswi sakit aktif pada filter gedung asrama saat ini. Laporan akan muncul otomatis saat skrining mandiri dilakukan.
+                </p>
+              </div>
+            ) : (
+              filteredRecords.map((rec) => {
               const isSelected = selectedRecord?.id === rec.id;
               return (
                 <button
@@ -291,13 +300,13 @@ export const PembinaDashboard: React.FC<PembinaDashboardProps> = ({
                   onClick={() => setSelectedRecordId(rec.id)}
                   className={`w-full p-4 rounded-xl text-left border transition-all ${
                     isSelected
-                      ? 'bg-white border-zinc-900 ring-1 ring-zinc-900 shadow-xs'
-                      : 'bg-white hover:bg-zinc-50 border-zinc-200'
+                      ? 'bg-white border-[#0D9488] ring-1 ring-[#0D9488] shadow-xs'
+                      : 'bg-white hover:bg-slate-50 border-slate-200'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2 mb-1">
                     <div>
-                      <h3 className="font-semibold text-xs sm:text-sm text-zinc-900">
+                      <h3 className="font-semibold text-xs sm:text-sm text-slate-800">
                         {rec.studentName || 'Siswa Asrama'}
                       </h3>
                       <p className="text-[11px] text-zinc-500 font-mono">
@@ -330,7 +339,7 @@ export const PembinaDashboard: React.FC<PembinaDashboardProps> = ({
                   </div>
                 </button>
               );
-            })}
+            }))}
           </div>
         </div>
 
@@ -387,8 +396,8 @@ export const PembinaDashboard: React.FC<PembinaDashboardProps> = ({
                     onClick={() => handleToggleDispensation(selectedRecord)}
                     className={`p-3.5 rounded-xl border text-left transition-colors flex items-start gap-2.5 ${
                       selectedRecord.dispensationApproved
-                        ? 'bg-zinc-900 text-white border-zinc-900'
-                        : 'bg-white hover:bg-zinc-50 border-zinc-200 text-zinc-800'
+                        ? 'bg-[#0D9488] text-white border-[#0D9488]'
+                        : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-800'
                     }`}
                   >
                     <Bed className="w-4 h-4 shrink-0 mt-0.5" />
@@ -398,7 +407,7 @@ export const PembinaDashboard: React.FC<PembinaDashboardProps> = ({
                           ? 'Izin Istirahat Kamar: DISETUJUI'
                           : 'Beri Dispensasi Istirahat Kamar'}
                       </p>
-                      <p className={`text-[11px] mt-0.5 ${selectedRecord.dispensationApproved ? 'text-zinc-300' : 'text-zinc-500'}`}>
+                      <p className={`text-[11px] mt-0.5 ${selectedRecord.dispensationApproved ? 'text-teal-100' : 'text-slate-500'}`}>
                         {selectedRecord.dispensationApproved
                           ? 'Siswa sah beristirahat di kasur kamar & tidak ikut KBM.'
                           : 'Klik untuk mengizinkan siswa/siswi tidak mengikuti KBM kelas.'}
@@ -409,14 +418,14 @@ export const PembinaDashboard: React.FC<PembinaDashboardProps> = ({
                   {/* Ask NADI SOP */}
                   <button
                     onClick={() => handleAskNadiSOP(selectedRecord.complaintTitle)}
-                    className="p-3.5 rounded-xl border border-zinc-200 bg-zinc-50 hover:bg-zinc-100 text-left transition-colors flex items-start gap-2.5"
+                    className="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-left transition-colors flex items-start gap-2.5"
                   >
-                    <FileText className="w-4 h-4 text-[#0071E3] shrink-0 mt-0.5" />
+                    <FileText className="w-4 h-4 text-[#0D9488] shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-semibold text-zinc-900">
+                      <p className="font-semibold text-slate-800">
                         Konsultasi Pedoman SOP Asrama
                       </p>
-                      <p className="text-[11px] text-zinc-500 mt-0.5">
+                      <p className="text-[11px] text-slate-500 mt-0.5">
                         Dapatkan pedoman isolasi & kebersihan kamar dari NADI.
                       </p>
                     </div>
@@ -425,15 +434,15 @@ export const PembinaDashboard: React.FC<PembinaDashboardProps> = ({
               </div>
 
               {/* Add Warden Visit Note */}
-              <div className="space-y-3 pt-3 border-t border-zinc-100 text-xs">
+              <div className="space-y-3 pt-3 border-t border-slate-100 text-xs">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-zinc-700 uppercase tracking-wider">
+                  <span className="font-semibold text-slate-700 uppercase tracking-wider">
                     Buku Catatan Kunjungan Kamar:
                   </span>
                   {!isAddingVisit && (
                     <button
                       onClick={() => setIsAddingVisit(true)}
-                      className="text-xs text-[#0071E3] font-medium hover:underline flex items-center gap-1 no-print"
+                      className="text-xs text-[#0D9488] font-medium hover:underline flex items-center gap-1 no-print"
                     >
                       <Plus className="w-3.5 h-3.5" />
                       <span>Catat Kunjungan Baru</span>
@@ -442,26 +451,26 @@ export const PembinaDashboard: React.FC<PembinaDashboardProps> = ({
                 </div>
 
                 {isAddingVisit && (
-                  <form onSubmit={handleAddVisitNote} className="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-2.5 text-xs no-print">
+                  <form onSubmit={handleAddVisitNote} className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5 text-xs no-print">
                     <textarea
                       rows={2}
                       value={visitNote}
                       onChange={(e) => setVisitNote(e.target.value)}
                       placeholder="misal: Sudah dikunjungi pukul 20:30, siswa sedang tidur, hidrasi hangat dipantau ketua kamar..."
-                      className="w-full p-2.5 rounded-lg border border-zinc-300 text-xs text-zinc-900 bg-white leading-relaxed"
+                      className="w-full p-2.5 rounded-lg border border-slate-300 text-xs text-slate-900 bg-white leading-relaxed"
                       required
                     />
                     <div className="flex justify-end gap-2">
                       <button
                         type="button"
                         onClick={() => setIsAddingVisit(false)}
-                        className="px-3 py-1.5 rounded-md text-zinc-600 hover:bg-zinc-200 text-xs font-medium"
+                        className="px-3 py-1.5 rounded-md text-slate-600 hover:bg-slate-200 text-xs font-medium"
                       >
                         Batal
                       </button>
                       <button
                         type="submit"
-                        className="px-3.5 py-1.5 rounded-md bg-[#0071E3] hover:bg-blue-600 text-white font-medium text-xs shadow-xs"
+                        className="px-3.5 py-1.5 rounded-md bg-[#0D9488] hover:bg-[#0F766E] text-white font-medium text-xs shadow-xs"
                       >
                         Simpan Catatan
                       </button>
@@ -483,7 +492,15 @@ export const PembinaDashboard: React.FC<PembinaDashboardProps> = ({
                 </div>
               </div>
             </div>
-          ) : null}
+          ) : (
+            <div className="bg-white p-8 rounded-2xl border border-zinc-200 text-center space-y-3">
+              <School className="w-8 h-8 text-zinc-400 mx-auto" />
+              <h3 className="font-semibold text-sm text-zinc-900">Monitoring Gedung Asrama Siap</h3>
+              <p className="text-xs text-zinc-500 max-w-sm mx-auto leading-relaxed">
+                Pilih laporan kamar siswa/siswi di sebelah kiri untuk melihat catatan keluhan, memverifikasi dispensasi izin istirahat kasur, atau berkonsultasi SOP tindakan dengan NADI AI.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -40,9 +40,9 @@ export const HealthDiaryView: React.FC<HealthDiaryViewProps> = ({
   onConsultNadi,
   studentProfile,
 }) => {
-  // Scoped strictly to student's records
+  // Scoped strictly to student's personal records
   const personalRecords = records.filter(
-    (r) => !r.studentName || r.studentName === studentProfile.name || r.studentId === 'user-siswa-1'
+    (r) => !r.studentName || r.studentName === studentProfile.name
   );
 
   const [selectedRecordId, setSelectedRecordId] = useState<string | null>(
@@ -132,17 +132,17 @@ export const HealthDiaryView: React.FC<HealthDiaryViewProps> = ({
   return (
     <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 space-y-6">
       {/* Top Header Card - Apple Minimalist */}
-      <div className="bg-white rounded-2xl border border-zinc-200 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 no-print">
+      <div className="bg-white rounded-xl border border-slate-200 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 no-print">
         <div className="space-y-1">
-          <div className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-zinc-500">
-            <ClipboardList className="w-3.5 h-3.5 text-[#0071E3]" />
+          <div className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-slate-500">
+            <ClipboardList className="w-3.5 h-3.5 text-[#0D9488]" />
             <span>Rekam Kesehatan Mandiri Siswa</span>
           </div>
-          <h1 className="text-xl font-semibold tracking-tight text-zinc-900">
+          <h1 className="text-xl font-semibold tracking-tight text-slate-800">
             Buku Catatan Kesehatan Pribadi
           </h1>
-          <p className="text-xs text-zinc-500">
-            Siswa: <strong className="text-zinc-800">{studentProfile.name}</strong> • Kelas <strong className="text-zinc-800">{studentProfile.grade}</strong> ({studentProfile.dormBuilding}, {studentProfile.dormRoom})
+          <p className="text-xs text-slate-500">
+            Siswa: <strong className="text-slate-800">{studentProfile.name}</strong> • Kelas <strong className="text-slate-800">{studentProfile.grade}</strong> ({studentProfile.dormBuilding}, {studentProfile.dormRoom})
           </p>
         </div>
 
@@ -150,25 +150,25 @@ export const HealthDiaryView: React.FC<HealthDiaryViewProps> = ({
         <div className="flex flex-wrap items-center gap-2 shrink-0">
           <button
             onClick={handleExportPersonalXlsx}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs font-medium border border-zinc-200 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-medium border border-slate-200 transition-colors"
             title="Download Spreadsheet Excel / Sheets"
           >
-            <Download className="w-3.5 h-3.5 text-zinc-600" />
+            <Download className="w-3.5 h-3.5 text-slate-600" />
             <span>Ekspor XLSX (Excel)</span>
           </button>
 
           <button
             onClick={handlePrintPersonalReport}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs font-medium border border-zinc-200 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-medium border border-slate-200 transition-colors"
             title="Cetak Halaman PDF"
           >
-            <Printer className="w-3.5 h-3.5 text-zinc-600" />
+            <Printer className="w-3.5 h-3.5 text-slate-600" />
             <span>Cetak PDF</span>
           </button>
 
           <button
             onClick={() => setIsAddingNew(true)}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#0071E3] hover:bg-blue-600 text-white text-xs font-semibold transition-colors"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#0D9488] hover:bg-[#0F766E] text-white text-xs font-semibold transition-colors"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Catat Keluhan Baru</span>
@@ -198,12 +198,12 @@ export const HealthDiaryView: React.FC<HealthDiaryViewProps> = ({
           </div>
 
           {filteredRecords.length === 0 ? (
-            <div className="bg-white p-8 rounded-2xl border border-dashed border-zinc-300 text-center text-xs text-zinc-500 space-y-2">
-              <ClipboardList className="w-8 h-8 mx-auto text-zinc-400" />
-              <p className="font-medium text-zinc-700">Belum ada riwayat keluhan di kategori ini.</p>
+            <div className="bg-white p-8 rounded-xl border border-dashed border-slate-300 text-center text-xs text-slate-500 space-y-2">
+              <ClipboardList className="w-8 h-8 mx-auto text-slate-400" />
+              <p className="font-medium text-slate-700">Belum ada riwayat keluhan di kategori ini.</p>
               <button
                 onClick={() => setIsAddingNew(true)}
-                className="text-[#0071E3] hover:underline font-semibold"
+                className="text-[#0D9488] hover:underline font-semibold"
               >
                 Catat keluhan kesehatan pertama
               </button>
@@ -221,12 +221,12 @@ export const HealthDiaryView: React.FC<HealthDiaryViewProps> = ({
                     }}
                     className={`w-full p-4 rounded-xl text-left border transition-all ${
                       isSelected
-                        ? 'bg-white border-zinc-900 ring-1 ring-zinc-900 shadow-xs'
-                        : 'bg-white hover:bg-zinc-50 border-zinc-200'
+                        ? 'bg-white border-[#0D9488] ring-1 ring-[#0D9488] shadow-xs'
+                        : 'bg-white hover:bg-slate-50 border-slate-200'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2 mb-1">
-                      <h3 className="font-semibold text-xs sm:text-sm text-zinc-900 line-clamp-1">
+                      <h3 className="font-semibold text-xs sm:text-sm text-slate-800 line-clamp-1">
                         {rec.complaintTitle}
                       </h3>
                       <TriageBadge level={rec.triageLevel} size="sm" />
@@ -352,13 +352,13 @@ export const HealthDiaryView: React.FC<HealthDiaryViewProps> = ({
                   <button
                     type="button"
                     onClick={() => setIsAddingNew(false)}
-                    className="px-3.5 py-2 rounded-lg text-zinc-600 hover:bg-zinc-100 transition-colors"
+                    className="px-3.5 py-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
                   >
                     Batal
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 rounded-lg bg-[#0071E3] hover:bg-blue-600 text-white font-semibold transition-colors shadow-xs"
+                    className="px-4 py-2 rounded-lg bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold transition-colors shadow-xs"
                   >
                     Simpan ke Buku Catatan
                   </button>
@@ -466,16 +466,16 @@ export const HealthDiaryView: React.FC<HealthDiaryViewProps> = ({
                   </h4>
                   <button
                     onClick={() => setIsUpdating(!isUpdating)}
-                    className="text-xs text-[#0071E3] font-medium hover:underline no-print"
+                    className="text-xs text-[#0D9488] font-medium hover:underline no-print"
                   >
                     {isUpdating ? 'Batal Update' : '+ Tambah Catatan Kondisi'}
                   </button>
                 </div>
 
                 {isUpdating && (
-                  <form onSubmit={handleAddUpdate} className="p-4 rounded-xl border border-zinc-200 bg-zinc-50 space-y-3 text-xs no-print">
+                  <form onSubmit={handleAddUpdate} className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-3 text-xs no-print">
                     <div>
-                      <label className="block font-semibold text-zinc-700 mb-1">
+                      <label className="block font-semibold text-slate-700 mb-1">
                         Catatan Perkembangan Kondisi Terkini:
                       </label>
                       <input
@@ -483,14 +483,14 @@ export const HealthDiaryView: React.FC<HealthDiaryViewProps> = ({
                         value={updateNote}
                         onChange={(e) => setUpdateNote(e.target.value)}
                         placeholder="misal: Demam sudah turun, sakit tenggorokan berkurang..."
-                        className="w-full px-3 py-2 rounded-lg border border-zinc-300 text-zinc-900 bg-white"
+                        className="w-full px-3 py-2 rounded-lg border border-slate-300 text-slate-900 bg-white"
                         required
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block font-semibold text-zinc-700 mb-1">
+                        <label className="block font-semibold text-slate-700 mb-1">
                           Suhu Saat Ini (°C):
                         </label>
                         <input
@@ -498,17 +498,17 @@ export const HealthDiaryView: React.FC<HealthDiaryViewProps> = ({
                           value={updateTemp}
                           onChange={(e) => setUpdateTemp(e.target.value)}
                           placeholder="misal: 36.8°C"
-                          className="w-full px-3 py-2 rounded-lg border border-zinc-300 text-zinc-900 bg-white font-mono"
+                          className="w-full px-3 py-2 rounded-lg border border-slate-300 text-slate-900 bg-white font-mono"
                         />
                       </div>
                       <div>
-                        <label className="block font-semibold text-zinc-700 mb-1">
+                        <label className="block font-semibold text-slate-700 mb-1">
                           Status Evaluasi:
                         </label>
                         <select
                           value={updateStatus}
                           onChange={(e) => setUpdateStatus(e.target.value as any)}
-                          className="w-full px-3 py-2 rounded-lg border border-zinc-300 text-zinc-900 bg-white"
+                          className="w-full px-3 py-2 rounded-lg border border-slate-300 text-slate-900 bg-white"
                         >
                           <option value="Aktif">Masih Aktif</option>
                           <option value="Membaik">Sudah Membaik</option>
@@ -522,13 +522,13 @@ export const HealthDiaryView: React.FC<HealthDiaryViewProps> = ({
                       <button
                         type="button"
                         onClick={() => setIsUpdating(false)}
-                        className="px-3 py-1.5 text-zinc-600 hover:bg-zinc-200 rounded-md"
+                        className="px-3 py-1.5 text-slate-600 hover:bg-slate-200 rounded-md"
                       >
                         Batal
                       </button>
                       <button
                         type="submit"
-                        className="px-3.5 py-1.5 bg-[#0071E3] hover:bg-blue-600 text-white font-medium rounded-md shadow-xs"
+                        className="px-3.5 py-1.5 bg-[#0D9488] hover:bg-[#0F766E] text-white font-medium rounded-md shadow-xs"
                       >
                         Simpan Catatan
                       </button>
@@ -562,7 +562,21 @@ export const HealthDiaryView: React.FC<HealthDiaryViewProps> = ({
                 )}
               </div>
             </div>
-          ) : null}
+          ) : (
+            <div className="bg-white rounded-xl border border-slate-200 p-8 text-center space-y-3">
+              <ClipboardList className="w-8 h-8 mx-auto text-slate-400" />
+              <h3 className="font-semibold text-sm text-slate-800">Buku Catatan Kesehatan Siswa</h3>
+              <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
+                Catatan keluhan harianmu akan tersimpan di sini secara rapi. Kamu bisa mencetak lembar rujukan resmi ke petugas UKS atau mengekspor rekap riwayat ke file Excel (XLSX).
+              </p>
+              <button
+                onClick={() => setIsAddingNew(true)}
+                className="px-4 py-2 rounded-lg bg-[#0D9488] hover:bg-[#0F766E] text-white font-medium text-xs transition-colors shadow-xs"
+              >
+                + Tambah Catatan Keluhan Baru
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -67,13 +67,13 @@ export const EducationView: React.FC<EducationViewProps> = ({ onAskNadi }) => {
 
         {/* Search Bar */}
         <div className="relative max-w-lg pt-1">
-          <Search className="w-4 h-4 text-zinc-400 absolute left-3.5 top-4" />
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-4" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Cari artikel kesehatan (skabies, batuk, maag, demam, cedera)..."
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-zinc-300 text-zinc-900 text-xs placeholder-zinc-400 focus:outline-hidden focus:border-[#0071E3] bg-white"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-xs placeholder-slate-400 focus:outline-hidden focus:border-[#0D9488] bg-white"
           />
         </div>
       </div>
@@ -86,8 +86,8 @@ export const EducationView: React.FC<EducationViewProps> = ({ onAskNadi }) => {
             onClick={() => setSelectedCategory(cat)}
             className={`px-3 py-1.5 rounded-lg font-medium shrink-0 transition-colors ${
               selectedCategory === cat
-                ? 'bg-zinc-900 text-white font-semibold shadow-xs'
-                : 'bg-white hover:bg-zinc-100 text-zinc-700 border border-zinc-200'
+                ? 'bg-[#0D9488] text-white font-semibold shadow-xs'
+                : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
             }`}
           >
             {cat}
@@ -100,32 +100,32 @@ export const EducationView: React.FC<EducationViewProps> = ({ onAskNadi }) => {
         {filteredArticles.map((article) => (
           <div
             key={article.id}
-            className="bg-white rounded-2xl border border-zinc-200 p-5 flex flex-col justify-between hover:border-zinc-300 transition-colors shadow-xs"
+            className="bg-white rounded-xl border border-slate-200 p-5 flex flex-col justify-between hover:border-slate-300 transition-colors shadow-xs"
           >
             <div className="space-y-2.5">
               <div className="flex items-center justify-between text-[11px] font-mono">
-                <span className="text-zinc-500 uppercase">
+                <span className="text-slate-500 uppercase">
                   {article.category}
                 </span>
-                <span className="text-zinc-400 flex items-center gap-1">
+                <span className="text-slate-400 flex items-center gap-1">
                   <Clock className="w-3 h-3" />
                   {article.readTime}
                 </span>
               </div>
 
-              <h2 className="font-semibold text-sm sm:text-base text-zinc-900 leading-snug">
+              <h2 className="font-semibold text-sm sm:text-base text-slate-900 leading-snug">
                 {article.title}
               </h2>
 
-              <p className="text-xs text-zinc-500 line-clamp-3 leading-relaxed">
+              <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed">
                 {article.summary}
               </p>
             </div>
 
-            <div className="pt-4 mt-4 border-t border-zinc-100 flex items-center justify-between">
+            <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between">
               <button
                 onClick={() => setActiveArticle(article)}
-                className="inline-flex items-center gap-1 text-xs font-semibold text-[#0071E3] hover:underline"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-[#0D9488] hover:underline"
               >
                 <span>Baca Lengkap</span>
                 <ChevronRight className="w-3.5 h-3.5" />
@@ -133,7 +133,7 @@ export const EducationView: React.FC<EducationViewProps> = ({ onAskNadi }) => {
 
               <button
                 onClick={() => handleAskAboutArticle(article)}
-                className="text-xs text-zinc-500 hover:text-zinc-800 font-medium"
+                className="text-xs text-slate-500 hover:text-slate-800 font-medium"
               >
                 Konsultasi NADI
               </button>
@@ -229,7 +229,7 @@ export const EducationView: React.FC<EducationViewProps> = ({ onAskNadi }) => {
                   handleAskAboutArticle(activeArticle);
                   setActiveArticle(null);
                 }}
-                className="px-3.5 py-2 rounded-lg bg-[#0071E3] hover:bg-blue-600 text-white font-semibold text-xs transition-colors shadow-xs"
+                className="px-3.5 py-2 rounded-lg bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold text-xs transition-colors shadow-xs"
               >
                 Tanyakan Topik Ini ke NADI
               </button>

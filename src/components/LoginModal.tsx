@@ -63,7 +63,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     setTimeout(() => setCopiedRole(null), 2000);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
 
@@ -100,22 +100,23 @@ export const LoginModal: React.FC<LoginModalProps> = ({
       return;
     }
 
-    // Custom login fallback
-    const customUser: AuthUser = {
-      id: `usr-${Date.now()}`,
-      username: cleanEmail.split('@')[0],
-      name: selectedRole === 'siswa' ? DEMO_USERS.siswa.name : selectedRole === 'pembina' ? DEMO_USERS.pembina.name : DEMO_USERS.nakes.name,
-      role: selectedRole,
-      identifier: selectedRole === 'siswa' ? 'NISN 007238192' : selectedRole === 'pembina' ? 'NIP 198504122010011003' : 'SIP 503/440/SIP-D/2024',
-      title: selectedRole === 'siswa' ? 'Siswa Kelas XII-1 • Asrama Astra 1' : selectedRole === 'pembina' ? 'Kepala Pembina Asrama Putra Astra 1' : 'Koordinator Medis UKS & Pos Medis Asrama',
-      email: cleanEmail,
-    };
+    // Check Supabase and local accounts
+    try {
+      const { loginWithSupabase } = await import('../supabase');
+      const sbResult = await loginWithSupabase(cleanEmail, cleanPass);
+      if (sbResult.success && sbResult.user) {
+        setSuccessMessage(`Berhasil masuk sebagai ${sbResult.user.name}`);
+        setTimeout(() => {
+          onLogin(sbResult.user!);
+          onClose();
+        }, 250);
+        return;
+      }
+    } catch (e) {
+      console.warn('Supabase login check:', e);
+    }
 
-    setSuccessMessage(`Berhasil login ke peran ${selectedRole.toUpperCase()}`);
-    setTimeout(() => {
-      onLogin(customUser);
-      onClose();
-    }, 250);
+    setErrorMessage('Email atau kata sandi salah. Gunakan kredensial demo atau akun yang telah didaftarkan.');
   };
 
   const roleMeta = {
@@ -206,10 +207,21 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 
               <button
                 type="button"
-                onClick={() => handleOneClickDemo(selectedRole)}
-                className="px-3 py-1.5 rounded-lg bg-[#0071E3] hover:bg-blue-600 text-white font-semibold text-xs shadow-xs transition-colors shrink-0"
+                onClick={() => handleCopyCredentials(selectedRole, currentMeta.demoAccount.email || '', currentMeta.demoAccount.passwordHint)}
+                className="px-2.5 py-1.5 rounded-lg bg-zinc-200 hover:bg-zinc-300 text-zinc-700 font-medium text-xs transition-colors shrink-0 flex items-center gap-1"
+                title="Salin Email & Password"
               >
-                Masuk 1-Klik
+                {copiedRole === selectedRole ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>Tersalin</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>Salin</span>
+                  </>
+                )}
               </button>
             </div>
             <p className="text-[11px] text-zinc-600 leading-relaxed pt-1 border-t border-zinc-200">
@@ -259,19 +271,19 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="text-[11px] text-[#0071E3] hover:underline"
+                  className="text-[11px] text-[#0D9488] hover:underline"
                 >
                   {showPassword ? 'Sembunyikan' : 'Lihat Sandi'}
                 </button>
               </div>
               <div className="relative">
-                <Lock className="w-4 h-4 text-zinc-400 absolute left-3 top-2.5" />
+                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={passwordInput}
                   onChange={(e) => setPasswordInput(e.target.value)}
                   placeholder="Kata sandi..."
-                  className="w-full pl-9 pr-3 py-2 rounded-lg border border-zinc-300 text-zinc-900 focus:outline-hidden focus:border-[#0071E3] bg-white text-xs"
+                  className="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-300 text-slate-900 focus:outline-hidden focus:border-[#0D9488] bg-white text-xs"
                   required
                 />
               </div>
@@ -281,7 +293,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
               <button
                 type="button"
                 onClick={() => handleCopyCredentials(selectedRole, currentMeta.demoAccount.email || '', currentMeta.demoAccount.passwordHint)}
-                className="text-[11px] text-zinc-500 hover:text-zinc-800 flex items-center gap-1 font-mono"
+                className="text-[11px] text-slate-500 hover:text-slate-800 flex items-center gap-1 font-mono"
               >
                 {copiedRole === selectedRole ? (
                   <>
@@ -298,7 +310,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 
               <button
                 type="submit"
-                className="px-4 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-xs shadow-xs transition-colors flex items-center gap-1.5"
+                className="px-4 py-2 rounded-lg bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold text-xs shadow-xs transition-colors flex items-center gap-1.5"
               >
                 <span>Masuk Portal</span>
                 <ArrowRight className="w-3.5 h-3.5" />

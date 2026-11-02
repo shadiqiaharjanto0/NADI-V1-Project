@@ -117,11 +117,14 @@ HIJAU / KUNING / MERAH
 
 (Jika informasi masih kurang dan kondisi tidak darurat, ajukan 2-3 pertanyaan lanjutan sebelum menyimpulkan).
 
-## G. PENUTUP INTERAKSI
-Untuk keluhan non-darurat:
-"Kalau keluhanmu belum membaik atau muncul tanda bahaya, segera beri tahu petugas UKS, ya."
-Untuk keadaan darurat:
-Gunakan arahan langsung tanpa penutup santai.`;
+## H. KEMAMPUAN OPEN DATA, PENALARAN TERBUKA & FILTERING
+1. Kamu dibekali kemampuan open-world medical knowledge dan deduksi cerdas untuk mencari data, menganalisis faktor lingkungan asrama (kelembapan kamar, sanitasi pakaian/kasur, kontak fisik sekamar, makanan kantin), dan pola penularan penyakit.
+2. Kamu dapat menarik kesimpulan awal (deduksi) yang mendalam berdasarkan hubungan antara gejala, durasi, dan kondisi asrama.
+3. FILTERING & LIMITASI KESELAMATAN:
+   - DILARANG meresepkan antibiotik oral atau obat keras (G) tanpa pemeriksaan langsung nakes UKS/dokter.
+   - Rekomendasikan hanya obat bebas/bebas terbatas pertolongan pertama (parasetamol untuk demam, oralit untuk dehidrasi, antasida, salep kalamin/permetrin dengan anjuran UKS).
+   - Wajib selalu mengklasifikasikan ke dalam LEVEL 1: HIJAU, LEVEL 2: KUNING, atau LEVEL 3: MERAH.
+   - Format jawaban harus konsisten menggunakan format standar NADI Health Check tanpa menggunakan bintang markdown yang rusak.`;
 
 // Safety Deterministic Clinical Fallback
 function generateDeterministicFallback(userPrompt: string, studentProfile?: any) {
@@ -290,20 +293,38 @@ async function startServer() {
       parts: [{ text: m.text }],
     }));
 
-    // Attempt Gemini call with 8s timeout using fast gemini-3.1-flash-lite
+    // Attempt Gemini call with gemini-3.8-flash with Google Search grounding
     try {
-      const response = await withTimeout(
-        ai.models.generateContent({
-          model: 'gemini-3.1-flash-lite',
-          contents,
-          config: {
-            systemInstruction: customSystemInstruction,
-            temperature: 0.6,
-          },
-        }),
-        8000,
-        'Gemini API timeout'
-      );
+      let response;
+      try {
+        response = await withTimeout(
+          ai.models.generateContent({
+            model: 'gemini-3.8-flash',
+            contents,
+            config: {
+              systemInstruction: customSystemInstruction,
+              temperature: 0.5,
+              tools: [{ googleSearch: {} }],
+            },
+          }),
+          9500,
+          'Gemini 3.8 Flash search timeout'
+        );
+      } catch (searchToolError: any) {
+        console.warn('Gemini 3.8 Flash search tool issue, falling back to direct model:', searchToolError?.message);
+        response = await withTimeout(
+          ai.models.generateContent({
+            model: 'gemini-3.8-flash',
+            contents,
+            config: {
+              systemInstruction: customSystemInstruction,
+              temperature: 0.5,
+            },
+          }),
+          6000,
+          'Gemini 3.8 Flash direct timeout'
+        );
+      }
 
       if (response?.text) {
         const replyText = response.text;
@@ -370,7 +391,7 @@ Hasilkan ringkasan dalam format JSON berikut (hanya JSON valid, tanpa markdown b
 
       const response = await withTimeout(
         ai.models.generateContent({
-          model: 'gemini-3.1-flash-lite',
+          model: 'gemini-3.8-flash',
           contents: prompt,
           config: {
             responseMimeType: 'application/json',

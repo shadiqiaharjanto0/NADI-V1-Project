@@ -2,5 +2,7 @@
   "name": "NADI AI - Asisten Kesehatan Siswa Boarding School",
   "description": "Asisten skrining kesehatan awal, pemantauan keluhan, dan edukasi kesehatan siswa SMA Boarding School berbasis AI dengan panduan UKS.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

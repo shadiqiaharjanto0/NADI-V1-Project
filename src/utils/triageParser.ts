@@ -32,11 +32,15 @@ export function parseHealthCheckResponse(text: string): StructuredHealthCheck | 
 
   // Extract Keluhan Utama
   const keluhanMatch = text.match(/Keluhan utama:?\s*([\s\S]*?)(?=\*\*Rekomendasi urgensi|\*\*Penjelasan|\n\n\*\*|$)/i);
-  const keluhanUtama = keluhanMatch ? keluhanMatch[1].trim() : 'Keluhan kesehatan siswa';
+  const keluhanUtama = keluhanMatch
+    ? keluhanMatch[1].replace(/^\*\*|\*\*$/g, '').trim()
+    : 'Keluhan kesehatan siswa';
 
   // Extract Penjelasan Singkat
   const penjelasanMatch = text.match(/Penjelasan singkat:?\s*([\s\S]*?)(?=\*\*Yang perlu kamu lakukan|\*\*Tindakan|\n\n\*\*|$)/i);
-  const penjelasan = penjelasanMatch ? penjelasanMatch[1].trim() : '';
+  const penjelasan = penjelasanMatch
+    ? penjelasanMatch[1].replace(/^\*\*|\*\*$/g, '').trim()
+    : '';
 
   // Extract Yang perlu kamu lakukan sekarang
   const tindakanMatch = text.match(/Yang perlu kamu lakukan sekarang:?\s*([\s\S]*?)(?=\*\*Tanda bahaya|\n\n\*\*|$)/i);
@@ -60,7 +64,9 @@ export function parseHealthCheckResponse(text: string): StructuredHealthCheck | 
 
   // Extract Tindak lanjut
   const tindakLanjutMatch = text.match(/Tindak lanjut:?\s*([\s\S]*?)(?=\n\n\*\*|Kalau keluhanmu|$)/i);
-  const tindakLanjut = tindakLanjutMatch ? tindakLanjutMatch[1].trim() : '';
+  const tindakLanjut = tindakLanjutMatch
+    ? tindakLanjutMatch[1].replace(/^\*\*|\*\*$/g, '').trim()
+    : '';
 
   return {
     keluhanUtama,

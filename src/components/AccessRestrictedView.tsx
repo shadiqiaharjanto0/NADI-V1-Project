@@ -55,7 +55,7 @@ export const AccessRestrictedView: React.FC<AccessRestrictedViewProps> = ({
         <div className="flex flex-col sm:flex-row items-center gap-2 pt-2">
           <button
             onClick={onReturnToAllowed}
-            className="w-full sm:flex-1 py-2.5 px-4 rounded-xl bg-[#0071E3] hover:bg-blue-600 text-white text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
+            className="w-full sm:flex-1 py-2.5 px-4 rounded-xl bg-[#0D9488] hover:bg-[#0F766E] text-white text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 shadow-xs"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Kembali ke Dasbor Saya</span>

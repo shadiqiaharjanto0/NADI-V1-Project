@@ -1,4 +1,4 @@
-import { StudentProfile, HealthRecord, ChatMessage, AuthUser } from '../types';
+import { StudentProfile, HealthRecord, ChatMessage, AuthUser, ChatSession, UserRole } from '../types';
 
 const AUTH_USER_KEY = 'nadi_auth_user_v1';
 const PROFILE_KEY = 'nadi_student_profile_v1';
@@ -59,255 +59,7 @@ export const DEFAULT_PROFILE: StudentProfile = {
   uksContactPhone: '0821-4433-2211',
 };
 
-export const INITIAL_RECORDS: HealthRecord[] = [
-  {
-    id: 'rec-1',
-    studentId: 'user-siswa-1',
-    studentName: 'Shadiqia Fattaraditya Harjanto',
-    grade: 'XII-1',
-    dormBuilding: 'Astra 1',
-    dormRoom: 'Kamar 204',
-    timestamp: new Date(Date.now() - 36 * 3600 * 1000).toISOString(),
-    complaintTitle: 'Meriang, Sakit Tenggorokan & Badan Lemas',
-    complaintDetails: 'Tenggorokan sakit saat menelan sejak kemarin sore setelah apel hujan-hujanan, suhu tubuh terukur 37.8°C di kamar 204.',
-    severity: 5,
-    duration: '2 hari',
-    triageLevel: 'KUNING',
-    actionsTaken: 'Istirahat di tempat tidur kamar Astra 1, banyak minum air hangat, paracetamol UKS.',
-    status: 'Membaik',
-    vitalSigns: {
-      temperature: '37.4°C',
-      bloodPressure: '110/70 mmHg',
-      pulse: '78 bpm',
-      spO2: '98%',
-    },
-    dispensationApproved: true,
-    dispensationDays: 1,
-    medicationsGiven: ['Paracetamol 500mg (3x1 sesudah makan)', 'Vitamin C 500mg'],
-    updates: [
-      {
-        id: 'up-1',
-        timestamp: new Date(Date.now() - 24 * 3600 * 1000).toISOString(),
-        authorRole: 'siswa',
-        authorName: 'Shadiqia Fattaraditya',
-        note: 'Suhu 37.9°C, sudah lapor ke Pembina Astra 1 dan istirahat di kamar.',
-        temperature: '37.9°C',
-        statusChange: 'Aktif',
-      },
-      {
-        id: 'up-2',
-        timestamp: new Date(Date.now() - 10 * 3600 * 1000).toISOString(),
-        authorRole: 'nakes',
-        authorName: 'dr. Nurul Hidayah',
-        note: 'Pemeriksaan UKS: faring hiperemis ringan. Diberikan obat kumur antiseptik dan paracetamol. Izin istirahat KBM 1 hari disetujui.',
-        temperature: '37.4°C',
-        statusChange: 'Membaik',
-      },
-    ],
-  },
-  {
-    id: 'rec-2',
-    studentId: 'user-siswa-2',
-    studentName: 'Fikri Haikal',
-    grade: 'XII-1',
-    dormBuilding: 'Astra 1',
-    dormRoom: 'Kamar 204',
-    timestamp: new Date(Date.now() - 18 * 3600 * 1000).toISOString(),
-    complaintTitle: 'Bintik Berair & Gatal Hebat di Sela Jari (Waspada Skabies)',
-    complaintDetails: 'Gatal memuncak di malam hari di sela jari kedua tangan dan pergelangan. Sekamar dengan Shadiqia di Kamar 204 Astra 1.',
-    severity: 6,
-    duration: '4 hari',
-    triageLevel: 'KUNING',
-    actionsTaken: 'Cuci tangan dengan sabun, belum diberi salep, lapor ke UKS.',
-    status: 'Dirujuk ke UKS',
-    vitalSigns: {
-      temperature: '36.7°C',
-      bloodPressure: '115/75 mmHg',
-      pulse: '80 bpm',
-    },
-    clinicalNotes: 'Dugaan kuat Skabies (Sarcoptes scabiei). Diinstruksikan pengobatan serentak satu kamar 204 Astra 1 dengan krim Permethrin 5% dan pencucian sprei air panas.',
-    dispensationApproved: false,
-    updates: [
-      {
-        id: 'up-201',
-        timestamp: new Date(Date.now() - 6 * 3600 * 1000).toISOString(),
-        authorRole: 'nakes',
-        authorName: 'Ns. Siti Rahmah',
-        note: 'Krim Permethrin 5% diserahkan ke pembina asrama untuk diaplikasikan malam ini serentak di kamar 204 Astra 1.',
-        statusChange: 'Dirujuk ke UKS',
-      },
-    ],
-  },
-  {
-    id: 'rec-3',
-    studentId: 'user-siswa-3',
-    studentName: 'Rayhan Athallah',
-    grade: 'XI-3',
-    dormBuilding: 'Astra 2',
-    dormRoom: 'Kamar 108',
-    timestamp: new Date(Date.now() - 8 * 3600 * 1000).toISOString(),
-    complaintTitle: 'Pergelangan Kaki Kanan Terkilir / Bengkak (Cedera Futsal)',
-    complaintDetails: 'Terkilir saat tanding futsal sore di lapangan asrama. Pergelangan kaki kanan nyeri menumpu, bengkak ringan.',
-    severity: 6,
-    duration: 'Tadi sore',
-    triageLevel: 'KUNING',
-    actionsTaken: 'Protokol R.I.C.E awal di kamar asrama Astra 2: Kompres es batu dibungkus kain dan balut perban elastis tensocrepe.',
-    status: 'Observasi Rawat UKS',
-    vitalSigns: {
-      temperature: '36.6°C',
-      bloodPressure: '120/80 mmHg',
-      pulse: '84 bpm',
-    },
-    clinicalNotes: 'Sprain pergelangan kaki lateral dextra grade I. Tidak ada tanda fraktur / krepitasi. Diposisikan elevasi di UKS.',
-    dispensationApproved: true,
-    dispensationDays: 2,
-    updates: [
-      {
-        id: 'up-301',
-        timestamp: new Date(Date.now() - 4 * 3600 * 1000).toISOString(),
-        authorRole: 'pembina',
-        authorName: 'Pak Ahmad Rahmat, S.Pd.',
-        note: 'Siswa kelas XI-3 diistirahatkan di ruang rawat UKS sore ini, dibantu kruk saat berjalan.',
-        statusChange: 'Observasi Rawat UKS',
-      },
-    ],
-  },
-  {
-    id: 'rec-4',
-    studentId: 'user-siswa-4',
-    studentName: 'Dimas Aditya',
-    grade: 'X-2',
-    dormBuilding: 'Astra 3',
-    dormRoom: 'Kamar 305',
-    timestamp: new Date(Date.now() - 2 * 3600 * 1000).toISOString(),
-    complaintTitle: 'Demam Tinggi 39.2°C, Menggigil & Nyeri Sendi Ekstrem (Waspada Dengue)',
-    complaintDetails: 'Demam hari ke-3 siswa baru kelas X di Astra 3, nyeri di belakang bola mata, lemas ekstrem, dan mual tidak bisa makan.',
-    severity: 9,
-    duration: '3 hari',
-    triageLevel: 'MERAH',
-    actionsTaken: 'Dibaringkan di UKS, kompres air hangat, rehidrasi oralit.',
-    status: 'Rujuk RS',
-    vitalSigns: {
-      temperature: '39.2°C',
-      bloodPressure: '100/65 mmHg',
-      pulse: '102 bpm',
-      spO2: '97%',
-    },
-    clinicalNotes: 'Suspek Dengue Fever hari ke-3 fase kritis. Rujuk ke IGD RSUD untuk cek DL lengkap (Trombosit & Ht) dan infus cairan ringer laktat.',
-    dispensationApproved: true,
-    dispensationDays: 3,
-    updates: [
-      {
-        id: 'up-401',
-        timestamp: new Date(Date.now() - 1 * 3600 * 1000).toISOString(),
-        authorRole: 'nakes',
-        authorName: 'dr. Nurul Hidayah',
-        note: 'Ambulans sekolah disiapkan, didampingi Pembina Asrama Astra 3 menuju IGD RSUD.',
-        statusChange: 'Rujuk RS',
-      },
-    ],
-  },
-  {
-    id: 'rec-5',
-    studentId: 'user-siswa-5',
-    studentName: 'Aisyah Putri Rahmadani',
-    grade: 'XII-2',
-    dormBuilding: 'Astri 1',
-    dormRoom: 'Kamar 104',
-    timestamp: new Date(Date.now() - 5 * 3600 * 1000).toISOString(),
-    complaintTitle: 'Nyeri Ulu Hati Melilit & Mual (Dispepsia / Maag Akut)',
-    complaintDetails: 'Perut perih setelah telat sarapan saat jam belajar mandiri, perut kembung dan mual.',
-    severity: 5,
-    duration: '6 jam',
-    triageLevel: 'KUNING',
-    actionsTaken: 'Diberi air hangat dan teh manis encer di Asrama Astri 1.',
-    status: 'Membaik',
-    vitalSigns: {
-      temperature: '36.8°C',
-      bloodPressure: '105/70 mmHg',
-      pulse: '76 bpm',
-    },
-    clinicalNotes: 'Sindrom dispepsia akut dipicu telat makan. Diberikan antasida kunyah 1 tab 30 menit ac dan istirahat 30 menit.',
-    dispensationApproved: true,
-    dispensationDays: 1,
-    updates: [
-      {
-        id: 'up-501',
-        timestamp: new Date(Date.now() - 2 * 3600 * 1000).toISOString(),
-        authorRole: 'nakes',
-        authorName: 'Ns. Siti Rahmah',
-        note: 'Nyeri mereda setelah minum obat antasida. Boleh kembali ke kamar Astri 1.',
-        statusChange: 'Membaik',
-      },
-    ],
-  },
-  {
-    id: 'rec-6',
-    studentId: 'user-siswa-6',
-    studentName: 'Zahra Almira',
-    grade: 'XI-5',
-    dormBuilding: 'Astri 2',
-    dormRoom: 'Kamar 202',
-    timestamp: new Date(Date.now() - 14 * 3600 * 1000).toISOString(),
-    complaintTitle: 'Flu, Hidung Tersumbat & Sakit Kepala Berat',
-    complaintDetails: 'Hidung mampet dan bersin-bersin sejak bangun tidur subuh, kepala pusing berdenyut di bagian depan.',
-    severity: 4,
-    duration: '1 hari',
-    triageLevel: 'HIJAU',
-    actionsTaken: 'Minum air hangat, istirahat di kamar Astri 2 dengan minyak kayu putih.',
-    status: 'Aktif',
-    vitalSigns: {
-      temperature: '37.1°C',
-      bloodPressure: '110/70 mmHg',
-      pulse: '74 bpm',
-    },
-    clinicalNotes: 'Rinitis akut e.c. common cold / alergi udara dingin subuh.',
-    dispensationApproved: false,
-    updates: [
-      {
-        id: 'up-601',
-        timestamp: new Date(Date.now() - 12 * 3600 * 1000).toISOString(),
-        authorRole: 'siswa',
-        authorName: 'Zahra Almira',
-        note: 'Sudah mulai lega setelah kompres hangat.',
-        statusChange: 'Aktif',
-      },
-    ],
-  },
-  {
-    id: 'rec-7',
-    studentId: 'user-siswa-7',
-    studentName: 'Nabila Syakira',
-    grade: 'X-5',
-    dormBuilding: 'Astri 3',
-    dormRoom: 'Kamar 301',
-    timestamp: new Date(Date.now() - 20 * 3600 * 1000).toISOString(),
-    complaintTitle: 'Biduran / Kalikata Gatal Kemerahan di Lengan & Paha',
-    complaintDetails: 'Muncul bentol-bentol merah gatal setelah makan lauk udang di ruang makan asrama tadi malam.',
-    severity: 5,
-    duration: '10 jam',
-    triageLevel: 'KUNING',
-    actionsTaken: 'Kompres dingin, tidak digaruk dengan kuku.',
-    status: 'Dirujuk ke UKS',
-    vitalSigns: {
-      temperature: '36.5°C',
-      bloodPressure: '112/72 mmHg',
-      pulse: '78 bpm',
-    },
-    clinicalNotes: 'Urtikaria akut e.c. alergi makanan laut. Tidak ada sesak napas (stridor), bibir tidak bengkak.',
-    dispensationApproved: false,
-    updates: [
-      {
-        id: 'up-701',
-        timestamp: new Date(Date.now() - 16 * 3600 * 1000).toISOString(),
-        authorRole: 'nakes',
-        authorName: 'dr. Nurul Hidayah',
-        note: 'Diberikan Cetirizine 10mg 1x1 malam. Awasi tanda bahaya sesak napas.',
-        statusChange: 'Dirujuk ke UKS',
-      },
-    ],
-  },
-];
+export const INITIAL_RECORDS: HealthRecord[] = [];
 
 export function getStoredAuthUser(): AuthUser | null {
   try {
@@ -338,8 +90,8 @@ export function getStoredAuthUser(): AuthUser | null {
   } catch (e) {
     console.warn('Failed to load auth user', e);
   }
-  // Default to Siswa logged in for immediate usability
-  return DEMO_USERS.siswa;
+  // Default to null so user lands on homepage overview and must log in
+  return null;
 }
 
 export function saveStoredAuthUser(user: AuthUser | null): void {
@@ -359,7 +111,6 @@ export function getStoredProfile(): StudentProfile {
     const raw = localStorage.getItem(PROFILE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      // Auto migrate if previous profile was old placeholder or not matching current student
       if (
         parsed.name !== DEFAULT_PROFILE.name ||
         parsed.grade !== 'XII-1' ||
@@ -389,21 +140,20 @@ export function getStoredRecords(): HealthRecord[] {
     const raw = localStorage.getItem(RECORDS_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      // Auto migrate if records contain old Al-Farabi or MIPA references or missing Shadiqia
+      // Clean out previous mock data records
       if (
         Array.isArray(parsed) &&
-        (parsed.some((r: any) => r.dormBuilding?.includes('Al-Farabi') || r.studentName?.includes('Nabil')) ||
-         !parsed.some((r: any) => r.studentName === 'Shadiqia Fattaraditya Harjanto'))
+        parsed.some((r: any) => r.id?.startsWith('rec-') && ['rec-1', 'rec-2', 'rec-3', 'rec-4'].includes(r.id))
       ) {
-        saveStoredRecords(INITIAL_RECORDS);
-        return INITIAL_RECORDS;
+        saveStoredRecords([]);
+        return [];
       }
-      return parsed;
+      return Array.isArray(parsed) ? parsed : [];
     }
   } catch (e) {
     console.warn('Failed to load records', e);
   }
-  return INITIAL_RECORDS;
+  return [];
 }
 
 export function saveStoredRecords(records: HealthRecord[]): void {
@@ -430,4 +180,69 @@ export function saveStoredChat(messages: ChatMessage[]): void {
   } catch (e) {
     console.warn('Failed to save chat history', e);
   }
+}
+
+const SESSIONS_PREFIX = 'nadi_user_sessions_v2_';
+const ACTIVE_SESSION_PREFIX = 'nadi_user_active_session_v2_';
+
+export function getGreetingForUser(role: UserRole = 'siswa', name?: string): ChatMessage {
+  const firstName = name ? name.split(' ')[0] : '';
+  const greetingText =
+    role === 'pembina'
+      ? `Halo ${name || 'Bapak/Ibu Pembina'}! Saya NADI Health Intelligence. Siap membantu pemantauan kesehatan siswa/siswi asrama, evaluasi izin kasur KBM, dan SOP darurat.`
+      : role === 'nakes'
+      ? `Halo ${name || 'Tim Medis UKS'}! Saya NADI Health Intelligence. Siap mendukung triase klinis, pencatatan rekam medis, farmasi UKS, dan deteksi dini klaster penularan asrama.`
+      : `Halo ${firstName || 'Siswa/Siswi'}! Saya NADI (NADI Health Intelligence), asisten kesehatan digital untuk asrama sekolahmu.\n\nSaya siap membantu kamu melakukan evaluasi awal keluhan kesehatan, memantau kondisi di kamar asrama, dan memberikan panduan pertolongan pertama yang aman.\n\nApa keluhan kesehatan atau gejala yang kamu rasakan hari ini?`;
+
+  return {
+    id: `greet-${Date.now()}`,
+    role: 'model',
+    text: greetingText,
+    timestamp: new Date().toISOString(),
+  };
+}
+
+export function getUserChatSessions(userIdOrKey: string, role: UserRole = 'siswa', name?: string): ChatSession[] {
+  if (!userIdOrKey) return [];
+  try {
+    const raw = localStorage.getItem(`${SESSIONS_PREFIX}${userIdOrKey}`);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch (e) {
+    console.warn('Failed to load user chat sessions', e);
+  }
+
+  const initialGreeting = getGreetingForUser(role, name);
+  const defaultSession: ChatSession = {
+    id: `sess-${Date.now()}`,
+    userId: userIdOrKey,
+    title: 'Sesi Skrining Awal',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    messages: [initialGreeting],
+  };
+
+  saveUserChatSessions(userIdOrKey, [defaultSession]);
+  return [defaultSession];
+}
+
+export function saveUserChatSessions(userIdOrKey: string, sessions: ChatSession[]): void {
+  if (!userIdOrKey) return;
+  try {
+    localStorage.setItem(`${SESSIONS_PREFIX}${userIdOrKey}`, JSON.stringify(sessions));
+  } catch (e) {
+    console.warn('Failed to save user chat sessions', e);
+  }
+}
+
+export function getActiveSessionId(userIdOrKey: string): string | null {
+  if (!userIdOrKey) return null;
+  return localStorage.getItem(`${ACTIVE_SESSION_PREFIX}${userIdOrKey}`);
+}
+
+export function saveActiveSessionId(userIdOrKey: string, sessionId: string): void {
+  if (!userIdOrKey) return;
+  localStorage.setItem(`${ACTIVE_SESSION_PREFIX}${userIdOrKey}`, sessionId);
 }

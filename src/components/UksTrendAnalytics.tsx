@@ -42,7 +42,7 @@ const RAW_MONTHLY_DATA: MonthlyData[] = [
 ];
 
 const CATEGORY_CONFIG: Record<string, { label: string; color: string; desc: string }> = {
-  ispa: { label: 'ISPA & Flu / Batuk', color: '#0071E3', desc: 'Infeksi pernapasan, demam, radang tenggorokan' },
+  ispa: { label: 'ISPA & Flu / Batuk', color: '#0D9488', desc: 'Infeksi pernapasan, demam, radang tenggorokan' },
   pencernaan: { label: 'Pencernaan & Maag', color: '#6E6E73', desc: 'Dispepsia, telat makan siswa/siswi, gastroenteritis' },
   kulit: { label: 'Kulit & Skabies Asrama', color: '#0F172A', desc: 'Kudis siswa/siswi, alergi kasur, infeksi tungau' },
   cedera: { label: 'Cedera Olahraga & Fisik', color: '#E11D48', desc: 'Keseleo, luka gores, trauma olahraga sore' },
