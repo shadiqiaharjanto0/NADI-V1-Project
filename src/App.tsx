@@ -214,7 +214,7 @@ export default function App() {
 
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 12000);
+      const timeoutId = setTimeout(() => controller.abort(), 28000);
 
       const response = await fetch('/api/chat', {
         method: 'POST',

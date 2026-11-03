@@ -517,11 +517,11 @@ export const ChatScreen: React.FC<ChatScreenProps> = ({
                               </p>
                             </div>
 
-                            {/* Penjelasan Singkat */}
+                            {/* Penalaran Klinis */}
                             {parsedCheck.penjelasan && (
                               <div className="space-y-1">
                                 <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold block">
-                                  Analisis & Deduksi Klinis:
+                                  Penalaran Klinis:
                                 </span>
                                 <p className="text-slate-700 leading-relaxed">
                                   <FormattedText text={parsedCheck.penjelasan} />
@@ -529,10 +529,10 @@ export const ChatScreen: React.FC<ChatScreenProps> = ({
                               </div>
                             )}
 
-                            {/* Tindakan Pertolongan Pertama di Asrama */}
+                            {/* Tindakan Keselamatan Siswa */}
                             <div className="bg-teal-50/40 p-4 rounded-lg border border-teal-200/80 space-y-2">
                               <span className="text-xs font-bold text-teal-900 uppercase tracking-wider block">
-                                Tindakan Pertolongan Pertama di Asrama:
+                                Tindakan Keselamatan Siswa:
                               </span>
                               <ul className="text-slate-700 space-y-2 list-none pl-0 leading-relaxed">
                                 {parsedCheck.tindakanSekarang.map((action, i) => (
@@ -553,7 +553,7 @@ export const ChatScreen: React.FC<ChatScreenProps> = ({
                               <div className="p-3.5 rounded-lg border border-amber-300 bg-amber-50/70 text-amber-950 space-y-1.5">
                                 <span className="text-xs font-bold uppercase flex items-center gap-1.5 text-amber-900">
                                   <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
-                                  <span>Tanda Bahaya yang Perlu Diwaspadai:</span>
+                                  <span>Tanda Bahaya (Red Flags):</span>
                                 </span>
                                 <ul className="space-y-1 list-disc pl-5 text-amber-900 text-xs">
                                   {parsedCheck.tandaBahaya.map((item, i) => (
@@ -569,7 +569,7 @@ export const ChatScreen: React.FC<ChatScreenProps> = ({
                             {parsedCheck.tindakLanjut && (
                               <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 text-slate-800">
                                 <span className="font-semibold block mb-0.5 text-[10px] uppercase font-mono text-slate-400">
-                                  Tindak Lanjut & Rekomendasi UKS:
+                                  Tindak Lanjut UKS:
                                 </span>
                                 <p className="leading-relaxed">
                                   <FormattedText text={parsedCheck.tindakLanjut} />

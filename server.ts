@@ -21,114 +21,245 @@ const ai = new GoogleGenAI({
   },
 });
 
-const NADI_SYSTEM_INSTRUCTION = `# NADI AI | BASIC SYSTEM PROMPT v1.0
+const NADI_SYSTEM_INSTRUCTION = `# NADI HEALTH INTELLIGENCE | SISTEM PENALARAN DEDUKTIF KLINIS v3.0
 
-## A. IDENTITAS DAN PERAN
-Kamu adalah **NADI (NADI Health Intelligence)**, asisten kesehatan digital berbasis kecerdasan buatan yang dirancang khusus untuk lingkungan SMA Boarding School di Indonesia.
-NADI berperan sebagai asisten skrining kesehatan awal, pemantauan keluhan, dan edukasi kesehatan siswa.
-Kamu bukan dokter, bukan pengganti tenaga kesehatan, dan tidak memiliki kewenangan untuk memberikan diagnosis definitif atau meresepkan obat.
-Misi utamamu adalah membantu siswa mengenali tingkat urgensi keluhan kesehatan, memberikan panduan tindakan awal yang aman, dan menghubungkan siswa dengan petugas UKS atau layanan kesehatan profesional sesuai kebutuhan.
+## A. IDENTITAS DAN INTEGRITAS PROFESIONAL
+Kamu adalah **NADI (NADI Health Intelligence)**, sistem kecerdasan kesehatan digital terintegrasi untuk SMA Boarding School di Indonesia.
+Kamu bertindak dengan standar komunikasi medis formal, ringkas, objektif, berbasis bukti klinis (*evidence-based medicine*), dan berorientasi mutlak pada keselamatan siswa (*student safety first*).
 
-## B. KEPRIBADIAN DAN GAYA KOMUNIKASI
-1. Gunakan bahasa Indonesia yang natural, hangat, sederhana, dan mudah dipahami siswa SMA.
-2. Berkomunikasilah seperti asisten personal yang cerdas, tenang, ramah, dan dapat dipercaya.
-3. Hindari istilah medis yang rumit tanpa penjelasan.
-4. Jangan menghakimi, menyalahkan, mempermalukan, atau menakut-nakuti pengguna.
-5. Berikan jawaban yang singkat tetapi tetap lengkap dalam aspek keselamatan.
-6. Gunakan kata "aku" saat merujuk pada NADI dan "kamu" saat berbicara dengan siswa.
-7. Jangan menggunakan candaan dalam situasi medis serius atau darurat.
-8. Tunjukkan empati sewajarnya tanpa membuat janji bahwa kondisi siswa pasti akan membaik.
+Prinsip Utama:
+1. Hindari kalimat pembuka atau penutup basa-basi yang tidak perlu.
+2. Jangan gunakan emotikon, stiker, atau gaya bahasa santai/AI-slop.
+3. Gunakan kaidah bahasa medis formal yang lugas dan mudah dieksekusi siswa maupun pembina asrama.
+4. Jangan pernah meresepkan antibiotik oral atau obat keras (daftar G). Rekomendasikan hanya pertolongan pertama dan obat bebas terbatas yang aman.
 
-## C. TIGA FUNGSI UTAMA
+---
 
-### Fungsi 1: Skrining Kesehatan Awal
-Saat siswa menyampaikan keluhan:
-1. Identifikasi keluhan utama.
-2. Periksa apakah terdapat tanda bahaya yang memerlukan tindakan segera.
-3. Jika tidak ada tanda bahaya yang jelas, tanyakan informasi relevan seperti:
-   - Sejak kapan keluhan terjadi?
-   - Seberapa berat keluhannya?
-   - Apakah ada gejala penyerta?
-   - Apakah keluhan bertambah parah?
-   - Apakah ada riwayat penyakit, cedera, alergi, atau obat yang relevan?
-4. Jangan menanyakan informasi yang sudah diberikan pengguna.
-5. Ajukan maksimal 2–3 pertanyaan penting setiap giliran percakapan.
-6. Tentukan rekomendasi tingkat urgensi berdasarkan informasi yang tersedia.
-7. Berikan langkah pertolongan awal yang aman dan sesuai kewenangan pengguna di lingkungan asrama/UKS.
-8. Jelaskan tanda bahaya yang perlu diwaspadai.
-9. Anjurkan komunikasi dengan petugas UKS.
+## B. METODOLOGI PENALARAN DEDUKTIF KLINIS
+Saat menganalisis keluhan kesehatan, gunakan alur deduksi logis:
+1. **Premis Mayor (Patofisiologi & Epidemiologi Asrama):** Hubungkan mekanisme biologis gejala dengan dinamika asrama (ventilasi kamar tidur bersama, transmisi kontak/fomite/droplet, aktivitas fisik padat, kelelahan sirkadian, sanitasi pakaian/sprei).
+2. **Premis Minor (Keluhan Subjektif & Riwayat Siswa):** Identifikasi gejala spesifik, durasi onset, intensitas, ada/tidaknya komorbid/alergi, dan kehadiran tanda bahaya (*red flags*).
+3. **Konklusi Deduktif:** Tarik kesimpulan logis mengenai tingkat keparahan, pisahkan kondisi *self-limiting* dari potensi wabah/kegawatan, lalu tetapkan Level Urgensi secara proporsional.
 
-Jika informasi penting tidak tersedia, akui keterbatasannya dan gunakan rekomendasi yang lebih berhati-hati. Jangan menyimpulkan kondisi aman hanya karena siswa belum menyebutkan tanda bahaya.
+---
 
-### Fungsi 2: Pemantauan Kesehatan
-Jika sistem menyediakan fitur pencatatan kesehatan:
-1. Bantu siswa mencatat waktu munculnya keluhan, jenis gejala, perkembangan kondisi, dan tindakan yang sudah dilakukan.
-2. Bantu menyusun ringkasan perkembangan keluhan untuk petugas UKS.
-3. Jika gejala menetap atau memburuk, anjurkan evaluasi ulang sesuai tingkat urgensi.
-4. Hormati privasi data kesehatan siswa.
+## C. KLASIFIKASI LEVEL URGENSI MEDIS (BATASAN KETAT)
 
-### Fungsi 3: Edukasi Kesehatan
-Berikan edukasi kesehatan berdasarkan pedoman yang kredibel (WHO, Kemenkes RI, CDC):
-- Pencegahan penyakit menular di asrama (scabies/kudis, ISPA, influenza, DBD).
-- Pola hidup bersih dan sehat (PHBS).
-- Istirahat, hidrasi, dan nutrisi di asrama.
-- Kesehatan kulit dan kebersihan pribadi.
-- Pertolongan pertama keluhan/cedera ringan.
-- Kesehatan reproduksi dan menstruasi siswi.
-- Pencegahan cedera olahraga.
-- Kesehatan mental dan kebiasaan belajar yang sehat.
+- **LEVEL 1: HIJAU (Observasi Mandiri & Perawatan Dasar di Asrama):**
+  - Kriteria: Keluhan ringan, hemodinamik stabil, tanpa tanda bahaya (contoh: batuk pilek ringan tanpa sesak, pusing kelelahan, pegal pasca olahraga, maag ringan yang responsif terhadap makanan).
+  - Fokus Keselamatan: Istirahat di kamar, hidrasi cairan 2–2,5 L/hari, nutrisi teratur, pantau suhu berkala.
 
-## D. KLASIFIKASI URGENSI
-Gunakan tiga kategori rekomendasi:
-- LEVEL 1: HIJAU (Perawatan Awal dan Observasi di Asrama/UKS - keluhan tampak ringan, tidak ditemukan tanda bahaya).
-- LEVEL 2: KUNING (Perlu Penilaian Petugas UKS atau Klinik pada Hari yang Sama - keluhan sedang/mengganggu, menetap/memburuk, risiko komplikasi).
-- LEVEL 3: MERAH (DARURAT: Segera Cari Bantuan Medis / Petugas UKS / Pembina Asrama / IGD).
-  Jika LEVEL 3: Hentikan skrining rutin, jangan menunda pertolongan, instruksikan segera cari bantuan langsung, panggil pembina/petugas UKS/orang dewasa terdekat, jangan pergi sendirian!
+- **LEVEL 2: KUNING (Pemeriksaan Pos UKS / Klinik Sekolah Hari Ini):**
+  - Kriteria: Keluhan mengganggu aktivitas belajar/harian, demam >37.5°C, penyakit menular khas asrama (skabies/kudis, diare berulang, konjungtivitis), terkilir/sprain dengan pembengkakan lokal, nyeri lambung persisten.
+  - Fokus Keselamatan: Isolasi peralatan pribadi/sprei, kunjungan ke UKS hari ini untuk pemeriksaan tanda vital oleh perawat/dokter sekolah, terapi obat bebas terarah.
 
-## E. BATASAN MEDIS
-1. Tidak memberikan diagnosis pasti.
-2. Tidak meresepkan antibiotik atau obat keras.
-3. Tidak menyarankan tindakan invasif.
-4. Tidak menjamin kesembuhan.
-5. Tidak menggantikan pemeriksaan tenaga medis langsung.
+- **LEVEL 3: MERAH (Gawat Darurat Medis — Evakuasi & Rujukan Segera):**
+  - Kriteria: Ancaman jalan napas/pernapasan/sirkulasi/kesadaran (*red flags*): sesak napas berat, stridor/mengi hebat, bibir kebiruan (sianosis), penurunan kesadaran/pingsan, kejang, perdarahan masif, muntah/BAB hitam, fraktur terbuka/deformitas tulang, leher kaku dengan demam tinggi, nyeri dada menekan.
+  - Fokus Keselamatan: Hentikan skrining rutin, segera instruksikan evakuasi dan pendampingan, hubungi Pembina Asrama, Petugas UKS, dan layanan darurat 119/112!
 
-## F. FORMAT JAWABAN STANDAR
-Untuk skrining kesehatan atau evaluasi keluhan, gunakan struktur:
+---
+
+## D. STRUKTUR FORMAT JAWABAN (WAJIB DIIKUTI)
+
+### JALUR 1: KELUHAN KLINIS PRIBADI (TRIASE MEDIS)
+Gunakan struktur baku berikut secara ringkas dan formal:
 
 **NADI Health Check**
 
-**Keluhan utama:**
-[Ringkas keluhan siswa]
+**Keluhan Utama:**
+[Sebutkan ringkasan keluhan spesifik, durasi/onset, dan lokasi keluhan]
 
-**Rekomendasi urgensi:**
-HIJAU / KUNING / MERAH
+**Rekomendasi Urgensi:**
+[PILIH SATU SECARA EKSPLISIT: LEVEL 1: HIJAU / LEVEL 2: KUNING / LEVEL 3: MERAH]
 
-**Penjelasan singkat:**
-[Alasan pemilihan urgensi dengan bahasa ramah dan jelas]
+**Penalaran Klinis:**
+[Deduksi logis 1–2 kalimat padat yang mengaitkan gejala dengan mekanisme klinis atau risiko di lingkungan asrama serta rasionalisasi tingkat urgensi]
 
-**Yang perlu kamu lakukan sekarang:**
-[Langkah pertolongan awal yang praktis, aman, dan berurutan di asrama]
+**Tindakan Keselamatan Siswa:**
+1. [Tindakan prioritas keamanan: posisi tubuh, istirahat, pengamanan sirkulasi udara]
+2. [Tindakan hidrasi, kompres air hangat, atau pertolongan pertama spesifik]
+3. [Tindakan pencegahan penularan kamar atau pembatasan aktivitas fisik]
 
-**Tanda bahaya yang perlu diwaspadai:**
-[Tanda bahaya spesifik yang memerlukan peningkatan level segera]
+**Tanda Bahaya (Red Flags):**
+- [Poin-poin gejala darurat spesifik yang jika muncul mewajibkan eskalasi ke Level 3 / IGD]
 
-**Tindak lanjut:**
-[Kapan harus ke UKS, pembina asrama, atau bantuan darurat]
+**Tindak Lanjut UKS:**
+[Instruksi rujukan tegas: kapan harus ke UKS, siapa yang harus dihubungi di asrama, dan prosedur pelaporan]
 
-(Jika informasi masih kurang dan kondisi tidak darurat, ajukan 2-3 pertanyaan lanjutan sebelum menyimpulkan).
+---
 
-## H. KEMAMPUAN OPEN DATA, PENALARAN TERBUKA & FILTERING
-1. Kamu dibekali kemampuan open-world medical knowledge dan deduksi cerdas untuk mencari data, menganalisis faktor lingkungan asrama (kelembapan kamar, sanitasi pakaian/kasur, kontak fisik sekamar, makanan kantin), dan pola penularan penyakit.
-2. Kamu dapat menarik kesimpulan awal (deduksi) yang mendalam berdasarkan hubungan antara gejala, durasi, dan kondisi asrama.
-3. FILTERING & LIMITASI KESELAMATAN:
-   - DILARANG meresepkan antibiotik oral atau obat keras (G) tanpa pemeriksaan langsung nakes UKS/dokter.
-   - Rekomendasikan hanya obat bebas/bebas terbatas pertolongan pertama (parasetamol untuk demam, oralit untuk dehidrasi, antasida, salep kalamin/permetrin dengan anjuran UKS).
-   - Wajib selalu mengklasifikasikan ke dalam LEVEL 1: HIJAU, LEVEL 2: KUNING, atau LEVEL 3: MERAH.
-   - Format jawaban harus konsisten menggunakan format standar NADI Health Check tanpa menggunakan bintang markdown yang rusak.`;
+### JALUR 2: PERTANYAAN EDUKASI, PENGETAHUAN MEDIS, OBAT, ATAU PROSEDUR
+(Bila pengguna bertanya teori/penjelasan ilmiah, BUKAN mengeluhkan sakitnya sendiri)
+- **DILARANG memakai format "NADI Health Check" atau label triase.**
+- Langsung berikan penjelasan deduktif ilmiah:
+  1. **Definisi & Mekanisme Patologis:** Penjelasan biologis yang lugas dan akurat.
+  2. **Relevansi Lingkungan Asrama:** Faktor sanitasi, transmisi, atau gaya hidup asrama.
+  3. **Tindakan Pencegahan & Keselamatan Taktis:** Panduan langkah bernomor yang aplikatif.
+  4. **Batasan Keamanan Medis:** Peringatan obat bebas vs obat keras dan kapan harus ke faskes.
 
-// Safety Deterministic Clinical Fallback
+---
+
+### JALUR 3: SOP OPERASIONAL PEMBINA ASRAMA / TENAGA MEDIS
+- Berikan protokol operasional bernomor yang runut: triase klaster, karantina kamar sementara, sterilisasi tekstil (air panas >60°C), pencatatan rekam medis UKS, dan ambang batas rujukan ke rumah sakit luar.`;
+
+// Intelligent Deterministic Fallback that accurately answers questions and triages complaints
 function generateDeterministicFallback(userPrompt: string, studentProfile?: any) {
-  const p = userPrompt.toLowerCase();
+  const p = userPrompt.toLowerCase().trim();
+
+  // Check if user is asking a QUESTION / EDUCATIONAL INQUIRY
+  const isQuestion =
+    p.includes('?') ||
+    p.startsWith('apa') ||
+    p.startsWith('bagaimana') ||
+    p.startsWith('kenapa') ||
+    p.startsWith('mengapa') ||
+    p.startsWith('kapan') ||
+    p.startsWith('apakah') ||
+    p.startsWith('siapa') ||
+    p.startsWith('berapa') ||
+    p.startsWith('bolehkah') ||
+    p.startsWith('adakah') ||
+    p.startsWith('jelaskan') ||
+    p.startsWith('sebutkan') ||
+    p.startsWith('tips') ||
+    p.startsWith('cara') ||
+    p.includes('perbedaan') ||
+    p.includes('penyebab') ||
+    p.includes('obat apa');
+
+  if (isQuestion) {
+    // 1. Skabies / Kudis / Gatal Asrama
+    if (p.includes('skabies') || p.includes('kudis') || (p.includes('gatal') && p.includes('sela jari'))) {
+      return {
+        triageLevel: null,
+        reply: `**Mengenal Skabies (Kudis) dan Pencegahannya di Asrama:**
+
+**1. Apa Penyebabnya?**
+Skabies disebabkan oleh infestasi tungau mikroskopis *Sarcoptes scabiei var. hominis*. Tungau ini membuat terowongan kecil di bawah lapisan kulit luar untuk bertelur, yang memicu reaksi alergi hebat berupa gatal luar biasa, terutama di malam hari ketika suhu tubuh lebih hangat.
+
+**2. Gejala Khas:**
+- Gatal intens pada malam hari (*pruritus nokturna*).
+- Bintik-bintik merah kecil menyerupai jerawat air di sela-sela jari tangan, pergelangan tangan, siku, ketiak, pinggang, atau lipatan paha.
+- Menyerang orang-orang yang tinggal serumah atau sekamar asrama secara bersamaan.
+
+**3. Jalur Penularan:**
+- Kontak fisik kulit-ke-kulit secara langsung dan erat (berjabat tangan lama, tidur bersama).
+- Kontak tidak langsung melalui sprei, selimut, handuk, bantal, atau pakaian yang dipakai bergantian dengan penderita.
+
+**4. Penanganan & Sanitasi di Asrama:**
+- **Pemeriksaan Medis UKS:** Segera periksakan ke klinik UKS untuk mendapatkan resep losion/krim antiparasit khusus (seperti Permethrin 5%). Salep ini dioleskan ke seluruh tubuh dari leher ke bawah dan didiamkan 8–12 jam sebelum dibilas.
+- **Cuci Air Panas:** Rebus atau cuci seluruh pakaian, handuk, sarung bantal, dan sprei dengan air panas minimal 60°C, lalu jemur di bawah sinar matahari langsung atau setrika panas.
+- **Isolasi Barang Kering:** Barang-barang berbahan kain yang tidak bisa dicuci harus dimasukkan ke dalam kantong plastik tertutup rapat selama minimal 3–5 hari hingga tungau mati kehabisan inang.
+- **Pengobatan Serentak:** Jika ada teman sekamar yang mengalami gejala serupa, pengobatan harus dilakukan bersamaan agar tidak terjadi penularan bolak-balik.`
+      };
+    }
+
+    // 2. Pertolongan Pertama Mimisan
+    if (p.includes('mimisan') || p.includes('darah hidung')) {
+      return {
+        triageLevel: null,
+        reply: `**Panduan Pertolongan Pertama Mimisan (Epistaksis) di Asrama:**
+
+**Langkah-langkah Penanganan Cepat:**
+1. **Duduk Tegak dan Condongkan Tubuh ke Depan:** Jangan mendongakkan kepala ke belakang! Mendongak dapat menyebabkan darah mengalir ke tenggorokan dan tertelan ke lambung, memicu mual, muntah, atau tersedak.
+2. **Jepit Cuping Hidung:** Gunakan ibu jari dan jari telunjuk untuk menjepit erat bagian lunak hidung (tepat di bawah tulang hidung) selama 10–15 menit penuh tanpa dilepas. Bernapaslah melalui mulut.
+3. **Kompres Dingin:** Letakkan kompres es atau kain dingin di pangkal hidung dan dahi untuk membantu menyempitkan pembuluh darah (*vasokonstriksi*).
+4. **Setelah Darah Berhenti:** Jangan mengorek hidung, menghembuskan napas kuat (*nyisil*), atau membungkuk selama beberapa jam ke depan agar bekuan darah tidak lepas kembali.
+
+**Kapan Harus Segera ke UKS / Rumah Sakit?**
+- Perdarahan tidak berhenti setelah ditekan selama 20 menit terus-menerus.
+- Mimisan terjadi akibat benturan keras di kepala/wajah.
+- Siswa merasa pusing berputar, lemas ekstrem, atau kulit tampak pucat pasi.`
+      };
+    }
+
+    // 3. Pingsan / Penurunan Kesadaran
+    if (p.includes('pingsan') || p.includes('tidak sadar')) {
+      return {
+        triageLevel: 'MERAH',
+        reply: `**Prosedur Tanggap Darurat: Pertolongan Pertama Teman Pingsan (Sinkop):**
+
+**Langkah Penyelamatan Segera:**
+1. **Baringkan di Tempat Datar & Aman:** Posisikan tubuh telentang di lantai yang datar dan sejuk.
+2. **Tinggikan Posisi Kaki:** Angkat kaki setinggi 30 cm di atas posisi jantung (bisa diganjal bantal atau ransel) untuk memperlancar aliran darah kembali ke otak.
+3. **Longgarkan Pakaian:** Buka kancing kerah baju, lepaskan dasi atau ikat pinggang agar pernapasan leluasa.
+4. **Beri Ruang Udara:** Jangan biarkan siswa lain berkerumun mengerumuni korban agar sirkulasi udara tetap segar.
+5. **Cek Respons dan Pernapasan:** Panggil namanya dan tepuk pundaknya. Jika bernapas normal, biarkan istirahat. Jika korban muntah, segera miringkan tubuhnya ke sisi kiri (*recovery position*).
+6. **JANGAN Berikan Makanan/Minuman** kepada korban yang belum sadar penuh karena berisiko tersedak fatal ke paru-paru.
+
+Segera panggil **Pembina Asrama** dan **Petugas UKS** sekarang juga untuk evaluasi tanda vital.`
+      };
+    }
+
+    // 4. Demam & Obat Paracetamol
+    if (p.includes('demam') || p.includes('paracetamol') || p.includes('panas')) {
+      return {
+        triageLevel: null,
+        reply: `**Panduan Penanganan Demam dan Penggunaan Obat Bebas di Asrama:**
+
+**1. Penanganan Mandiri di Kamar Asrama:**
+- **Hidrasi Aktif:** Minum air putih hangat minimal 2 hingga 2,5 liter per hari. Saat demam, tubuh kehilangan banyak cairan melalui keringat dan penguapan kulit.
+- **Kompres Hangat (Bukan Es):** Gunakan kain yang dibasahi air hangat pada dahi, ketiak, atau lipat paha. Kompres hangat merangsang pembuluh darah membuka dan mengeluarkan panas tubuh secara alami.
+- **Pakaian Longgar & Nyaman:** Gunakan pakaian katun tipis yang menyerap keringat. Hindari menggunakan selimut terlalu tebal saat badan sedang sangat panas karena dapat memerangkap suhu tubuh.
+
+**2. Penggunaan Paracetamol:**
+- Paracetamol adalah obat analgesik-antipiretik lini pertama yang aman untuk meredakan demam dan nyeri ringan.
+- Dosis umum remaja: 500 mg setiap 4–6 jam sekali bila diperlukan (maksimal 3000–4000 mg per hari).
+- Paracetamol aman dikonsumsi sebelum atau sesudah makan (tidak seiritatif ibuprofen pada lambung).
+
+**3. Kapan Harus ke UKS?**
+- Suhu tubuh mencapai >38.5°C dan tidak turun setelah minum obat.
+- Demam menetap lebih dari 3 hari.
+- Disertai tanda bahaya seperti menggigil hebat, leher sangat kaku, kejang, muntah berulang, atau muncul ruam kemerahan di kulit.`
+      };
+    }
+
+    // 5. Asam Lambung / Maag / Pencernaan
+    if (p.includes('maag') || p.includes('lambung') || p.includes('mual') || p.includes('perut')) {
+      return {
+        triageLevel: null,
+        reply: `**Penjelasan Keluhan Maag (Dispepsia) & Asam Lambung pada Siswa Asrama:**
+
+**1. Mengapa Sering Terjadi di Asrama?**
+- Jadwal makan yang terlambat atau terlewat karena padatnya kegiatan sekolah/belajar malam.
+- Konsumsi makanan pedas, mie instan, gorengan berlebih, atau minuman berkafein (kopi/energi) saat begadang.
+- Tingkat stres dan kelelahan mental menjelang ujian (*brain-gut axis* meningkatkan produksi asam lambung).
+
+**2. Langkah Penanganan Mandiri:**
+- **Makan Porsi Kecil tapi Sering:** Jangan biarkan lambung kosong terlalu lama. Sediakan biskuit gandum atau pisang di kamar asrama.
+- **Minum Air Hangat:** Minum air putih hangat sedikit demi sedikit untuk menetralkan asam lambung.
+- **Posisi Duduk/Tegak:** Hindari langsung berbaring setelah makan minimal selama 2 jam untuk mencegah refluks asam lambung ke kerongkongan.
+- **Antasida:** Bila ulu hati terasa perih atau perih terbakar, tablet kunyah Antasida Doen dari pos UKS dapat dikunyah 1 jam sebelum makan atau 2 jam setelah makan.
+
+**3. Tanda Bahaya yang Perlu Diwaspadai:**
+- Nyeri perut hebat mendadak yang melilit tak tertahankan.
+- Muntah berwarna cokelat kehitaman atau BAB berwarna hitam pekat (*melena*).
+- Muntah terus-menerus hingga tidak ada cairan yang bisa masuk.`
+      };
+    }
+
+    // Default Educational Inquiry
+    return {
+      triageLevel: null,
+      reply: `**Informasi Kesehatan NADI Health Intelligence:**
+
+Terima kasih atas pertanyaannya mengenai: *"${userPrompt}"*.
+
+**Poin-Poin Penjelasan Penting:**
+1. **Dasar Medis & Pemahaman Klinis:**
+   Kondisi kesehatan ini sangat berkaitan erat dengan pola hidup bersih, sirkulasi lingkungan tempat tinggal, kebiasaan istirahat, serta asupan nutrisi seimbang di asrama.
+2. **Langkah Praktis & Perawatan yang Tepat:**
+   - Jaga kebersihan diri, cuci tangan dengan sabun mengalir sebelum makan dan setelah beraktivitas bersama.
+   - Penuhi hidrasi tubuh dengan minum air putih minimal 8 gelas per hari.
+   - Luangkan waktu tidur yang cukup minimal 7–8 jam untuk pemulihan imunitas seluler.
+3. **Peringatan Keselamatan:**
+   Hindari mengonsumsi obat keras (golongan antibiotik atau obat berlogo lingkaran merah dengan huruf K) tanpa resep dan pemeriksaan langsung dari dokter atau petugas medis UKS.
+
+Bila kamu atau teman sekamar mengalami gejala sakit yang mengganggu aktivitas belajar, jangan ragu untuk memeriksakan diri langsung ke Pos Medis UKS atau melapor ke Pembina Asrama, ya!`
+    };
+  }
+
+  // --- TRIASE KELUHAN KLINIS PRIBADI (Jika pengguna melaporkan gejala sakit) ---
 
   // Check for Level 3: MERAH indicators
   const isEmergency =
@@ -148,26 +279,28 @@ function generateDeterministicFallback(userPrompt: string, studentProfile?: any)
       triageLevel: 'MERAH' as const,
       reply: `**NADI Health Check**
 
-**Keluhan utama:**
+**Keluhan Utama:**
 ${userPrompt.slice(0, 100)}
 
-**Rekomendasi urgensi:**
-MERAH
+**Rekomendasi Urgensi:**
+LEVEL 3: MERAH (Gawat Darurat)
 
-**Penjelasan singkat:**
-Gejala yang kamu rasakan menunjukkan tanda bahaya kegawatdaruratan yang membutuhkan penanganan medis segera dari tenaga kesehatan atau pembina asrama.
+**Penalaran Klinis:**
+Gejala mengindikasikan gangguan akut pada fungsi vital (oksigenasi/sirkulasi/kesadaran) yang berpotensi dekompensasi cepat dan membutuhkan intervensi medis darurat segera.
 
-**Yang perlu kamu lakukan sekarang:**
-1. JANGAN PERGI SENDIRIAN! Segera panggil teman sekamar atau pembina asrama (${studentProfile?.emergencyContactName || 'Pembina Asrama'}) sekarang juga.
-2. Duduk atau baringkan tubuh dengan posisi nyaman (duduk tegak bila sesak napas).
-3. Longgarkan pakaian atau kancing kerah yang ketat.
-4. Jangan minum atau makan obat sembarangan tanpa instruksi petugas medis.
+**Tindakan Keselamatan Siswa:**
+1. Hentikan seluruh aktivitas fisik dan baringkan siswa dalam posisi aman (setengah duduk bila sesak, atau posisi miring mantap bila muntah/penurunan kesadaran).
+2. Amankan jalan napas, longgarkan pakaian ketat, dan pastikan sirkulasi ventilasi kamar terbuka penuh.
+3. Jangan tinggalkan siswa sendirian; instruksikan teman sekamar segera mendampingi.
+4. Dilarang memberikan makanan, minuman, atau obat oral pada kondisi kesadaran menurun.
 
-**Tanda bahaya yang perlu diwaspadai:**
-Penurunan kesadaran, kesulitan bernapas semakin berat, kulit membiru, atau nyeri bertambah hebat.
+**Tanda Bahaya (Red Flags):**
+- Penurunan kesadaran atau respons lambat
+- Sianosis (kebiruan pada bibir atau kuku)
+- Sesak napas berat dengan retraksi dinding dada
 
-**Tindak lanjut:**
-Segera hubungi Petugas UKS (${studentProfile?.uksContactPhone || 'Pos UKS'}) atau Pembina Asrama (${studentProfile?.emergencyContactPhone || '119'}), dan segera periksakan ke IGD rumah sakit terdekat!`
+**Tindak Lanjut UKS:**
+Segera panggil Pembina Asrama (${studentProfile?.emergencyContactName || 'Pembina Asrama'}), Petugas UKS (${studentProfile?.uksContactPhone || 'Pos UKS'}), dan lakukan rujukan ambulans / IGD terdekat (119/112).`
     };
   }
 
@@ -187,35 +320,36 @@ Segera hubungi Petugas UKS (${studentProfile?.uksContactPhone || 'Pos UKS'}) ata
     p.includes('pilek') ||
     p.includes('engkel') ||
     p.includes('terkilir') ||
-    p.includes('pusing');
+    p.includes('pusing') ||
+    p.includes('sakit kepala');
 
   if (isKuning) {
     return {
       triageLevel: 'KUNING' as const,
       reply: `**NADI Health Check**
 
-**Keluhan utama:**
+**Keluhan Utama:**
 ${userPrompt.slice(0, 90)}
 
-**Rekomendasi urgensi:**
-KUNING
+**Rekomendasi Urgensi:**
+LEVEL 2: KUNING (Pemeriksaan Pos UKS Hari Ini)
 
-**Penjelasan singkat:**
-Keluhanmu memerlukan observasi terarah dan pemeriksaan oleh petugas UKS atau klinik sekolah pada hari ini untuk mencegah gejala bertambah berat atau menular ke teman sekamar asrama.
+**Penalaran Klinis:**
+Keluhan menunjukkan proses patologis aktif (dugaan infeksi droplet/kontak, inflamasi mukosa lambung, atau cedera ligamen) dengan risiko penyebaran di kamar asrama atau perburukan gejala tanpa evaluasi medis.
 
-**Yang perlu kamu lakukan sekarang:**
-1. Istirahat di tempat tidur kamar asrama atau ruang istirahat UKS.
-2. Perbanyak minum air putih hangat minimal 2 liter per hari.
-3. Hindari meminjam pakaian, handuk, atau peralatan makan bersama teman sekamar.
-4. Kompres air hangat bila badan terasa demam atau meriang.
+**Tindakan Keselamatan Siswa:**
+1. Batasi aktivitas fisik berat dan istirahatkan tubuh di tempat tidur kamar asrama atau ruang observasi UKS.
+2. Tingkatkan hidrasi cairan elektrolit/air hangat 2 hingga 2,5 liter per hari untuk menjaga perfusi jaringan.
+3. Pisahkan pemakaian handuk, pakaian, dan sprei dari teman sekamar guna memutus rantai transmisi.
+4. Lakukan kompres air hangat (bukan es) jika terdapat demam atau meriang.
 
-**Tanda bahaya yang perlu diwaspadai:**
-Suhu tubuh meningkat >38.5°C, muntah terus-menerus, lemas tidak bertenaga, atau muncul sesak napas.
+**Tanda Bahaya (Red Flags):**
+- Suhu tubuh mencapai >38.5°C atau menggigil hebat
+- Muntah berulang hingga tidak mampu menelan cairan
+- Nyeri abdomen hebat yang menetap
 
-**Tindak lanjut:**
-Segera temui petugas UKS setelah jam istirahat atau lapor ke pembina asrama untuk mendapatkan pemeriksaan tanda vital dan obat pereda keluhan yang aman.
-
-Kalau keluhanmu belum membaik atau muncul tanda bahaya, segera beri tahu petugas UKS, ya.`
+**Tindak Lanjut UKS:**
+Datang ke Pos UKS pada jam operasional hari ini untuk pemeriksaan tanda-tanda vital (suhu, nadi, tensi) dan pencatatan rekam medis terpadu.`
     };
   }
 
@@ -224,28 +358,27 @@ Kalau keluhanmu belum membaik atau muncul tanda bahaya, segera beri tahu petugas
     triageLevel: 'HIJAU' as const,
     reply: `**NADI Health Check**
 
-**Keluhan utama:**
+**Keluhan Utama:**
 ${userPrompt.slice(0, 80)}
 
-**Rekomendasi urgensi:**
-HIJAU
+**Rekomendasi Urgensi:**
+LEVEL 1: HIJAU (Observasi Mandiri & Perawatan Dasar)
 
-**Penjelasan singkat:**
-Berdasarkan informasi yang kamu berikan, keluhan tampak ringan dan dapat dilakukan perawatan awal serta observasi mandiri di lingkungan asrama.
+**Penalaran Klinis:**
+Analisis klinis menunjukkan keluhan bersifat fungsional/ringan (*self-limiting*) tanpa keterlibatan tanda bahaya sistemik, sehingga aman diobservasi secara mandiri di kamar asrama.
 
-**Yang perlu kamu lakukan sekarang:**
-1. Beristirahat yang cukup di tempat tidur kamar asrama.
-2. Penuhi kebutuhan cairan tubuh dengan minum air putih secara teratur.
-3. Jaga kebersihan diri dan cuci tangan sebelum makan.
-4. Catat jika ada perubahan suhu tubuh atau keluhan baru yang muncul.
+**Tindakan Keselamatan Siswa:**
+1. Istirahat berbaring teratur minimal 7–8 jam dan kurangi pajanan layar gawai.
+2. Cukupi asupan cairan dengan minum air putih minimal 8 gelas per hari.
+3. Konsumsi makanan bergizi dari kantin/asrama secara teratur dan hindari makanan terlampau pedas atau asam.
+4. Catat mandiri perkembangan keluhan di Buku Catatan Kesehatan NADI.
 
-**Tanda bahaya yang perlu diwaspadai:**
-Gejala tidak berkurang dalam 24-48 jam, muncul demam tinggi, atau nyeri mengganggu aktivitas belajar.
+**Tanda Bahaya (Red Flags):**
+- Gejala menetap atau memberat lebih dari 48 jam
+- Timbul demam mendadak atau nyeri yang menghambat aktivitas belajar
 
-**Tindak lanjut:**
-Jika dalam 1-2 hari keluhan belum membaik, periksakan diri ke petugas UKS sekolah.
-
-Kalau keluhanmu belum membaik atau muncul tanda bahaya, segera beri tahu petugas UKS, ya.`
+**Tindak Lanjut UKS:**
+Apabila keluhan tidak mereda dalam 1–2 hari ke depan, laporkan ke Pembina Asrama atau periksakan diri ke Petugas UKS.`
   };
 }
 
@@ -293,69 +426,120 @@ async function startServer() {
       parts: [{ text: m.text }],
     }));
 
-    // Attempt Gemini call with gemini-3.8-flash with Google Search grounding
+    // Determine if web search grounding is explicitly requested or beneficial
+    const promptLower = lastUserMessage.toLowerCase();
+    const wantsSearch =
+      promptLower.includes('cari') ||
+      promptLower.includes('literatur') ||
+      promptLower.includes('jurnal') ||
+      promptLower.includes('pedoman') ||
+      promptLower.includes('who') ||
+      promptLower.includes('kemenkes') ||
+      promptLower.includes('cdc') ||
+      promptLower.includes('riset') ||
+      promptLower.includes('penelitian') ||
+      promptLower.includes('terbaru');
+
+    // Multi-tier model cascade to handle quota limits (429) and timeouts seamlessly
     try {
-      let response;
-      try {
-        response = await withTimeout(
-          ai.models.generateContent({
-            model: 'gemini-3.8-flash',
-            contents,
-            config: {
-              systemInstruction: customSystemInstruction,
-              temperature: 0.5,
-              tools: [{ googleSearch: {} }],
-            },
-          }),
-          9500,
-          'Gemini 3.8 Flash search timeout'
-        );
-      } catch (searchToolError: any) {
-        console.warn('Gemini 3.8 Flash search tool issue, falling back to direct model:', searchToolError?.message);
-        response = await withTimeout(
-          ai.models.generateContent({
-            model: 'gemini-3.8-flash',
-            contents,
-            config: {
-              systemInstruction: customSystemInstruction,
-              temperature: 0.5,
-            },
-          }),
-          6000,
-          'Gemini 3.8 Flash direct timeout'
-        );
+      let responseText: string | undefined;
+
+      // Tier 1: If search is requested, try gemini-3.8-flash with googleSearch tool
+      if (wantsSearch) {
+        try {
+          const searchRes = await withTimeout(
+            ai.models.generateContent({
+              model: 'gemini-3.8-flash',
+              contents,
+              config: {
+                systemInstruction: customSystemInstruction,
+                tools: [{ googleSearch: {} }],
+              },
+            }),
+            16000,
+            'Gemini 3.8 Flash search timeout'
+          );
+          if (searchRes?.text) {
+            responseText = searchRes.text;
+          }
+        } catch {
+          // If search tool hits quota (429) or times out, proceed silently to direct model
+          console.log('[NADI Engine] Search tool quota or timeout reached, proceeding to direct model.');
+        }
       }
 
-      if (response?.text) {
-        const replyText = response.text;
+      // Tier 2: Direct gemini-3.8-flash (fast, reliable, no deprecated temperature)
+      if (!responseText) {
+        try {
+          const directRes = await withTimeout(
+            ai.models.generateContent({
+              model: 'gemini-3.8-flash',
+              contents,
+              config: {
+                systemInstruction: customSystemInstruction,
+              },
+            }),
+            12000,
+            'Gemini 3.8 Flash direct timeout'
+          );
+          if (directRes?.text) {
+            responseText = directRes.text;
+          }
+        } catch {
+          console.log('[NADI Engine] Flash primary quota reached, attempting Flash-Lite.');
+        }
+      }
+
+      // Tier 3: gemini-3.1-flash-lite fallback in case gemini-3.8-flash encounters 429 quota exhaustion
+      if (!responseText) {
+        try {
+          const liteRes = await withTimeout(
+            ai.models.generateContent({
+              model: 'gemini-3.1-flash-lite',
+              contents,
+              config: {
+                systemInstruction: customSystemInstruction,
+              },
+            }),
+            8000,
+            'Gemini 3.1 Flash-Lite timeout'
+          );
+          if (liteRes?.text) {
+            responseText = liteRes.text;
+          }
+        } catch {
+          console.log('[NADI Engine] AI models busy or quota limit reached, activating clinical rule engine.');
+        }
+      }
+
+      if (responseText) {
         let triageLevel: 'HIJAU' | 'KUNING' | 'MERAH' | null = null;
         if (
-          /Rekomendasi urgensi:[\s\S]*?(MERAH|LEVEL 3: MERAH|DARURAT)/i.test(replyText) ||
-          replyText.includes('LEVEL 3: MERAH') ||
-          replyText.includes('DARURAT:')
+          /Rekomendasi urgensi:[\s\S]*?(MERAH|LEVEL 3: MERAH|DARURAT)/i.test(responseText) ||
+          responseText.includes('LEVEL 3: MERAH') ||
+          responseText.includes('DARURAT:')
         ) {
           triageLevel = 'MERAH';
         } else if (
-          /Rekomendasi urgensi:[\s\S]*?(KUNING|LEVEL 2: KUNING)/i.test(replyText) ||
-          replyText.includes('LEVEL 2: KUNING')
+          /Rekomendasi urgensi:[\s\S]*?(KUNING|LEVEL 2: KUNING)/i.test(responseText) ||
+          responseText.includes('LEVEL 2: KUNING')
         ) {
           triageLevel = 'KUNING';
         } else if (
-          /Rekomendasi urgensi:[\s\S]*?(HIJAU|LEVEL 1: HIJAU)/i.test(replyText) ||
-          replyText.includes('LEVEL 1: HIJAU')
+          /Rekomendasi urgensi:[\s\S]*?(HIJAU|LEVEL 1: HIJAU)/i.test(responseText) ||
+          responseText.includes('LEVEL 1: HIJAU')
         ) {
           triageLevel = 'HIJAU';
         }
 
         return res.json({
-          reply: replyText,
+          reply: responseText,
           triageLevel,
         });
       }
 
-      throw new Error('No response text');
-    } catch (error: any) {
-      console.warn('Gemini API response fallback triggered:', error?.message);
+      throw new Error('All AI model tiers exhausted');
+    } catch {
       // Seamless clinical fallback following the exact NADI standard
       const fallback = generateDeterministicFallback(lastUserMessage, studentProfile);
       return res.json({
@@ -389,23 +573,46 @@ Hasilkan ringkasan dalam format JSON berikut (hanya JSON valid, tanpa markdown b
   "tandaBahaya": "gejala darurat yang perlu diperhatikan petugas/pembina"
 }`;
 
-      const response = await withTimeout(
-        ai.models.generateContent({
-          model: 'gemini-3.8-flash',
-          contents: prompt,
-          config: {
-            responseMimeType: 'application/json',
-            temperature: 0.2,
-          },
-        }),
-        6000,
-        'Slip generation timeout'
-      );
+      let parsed: any = null;
+      try {
+        const response = await withTimeout(
+          ai.models.generateContent({
+            model: 'gemini-3.8-flash',
+            contents: prompt,
+            config: {
+              responseMimeType: 'application/json',
+            },
+          }),
+          6000,
+          'Slip generation timeout'
+        );
+        parsed = JSON.parse(response.text || '{}');
+      } catch {
+        // Fallback to flash-lite if 3.8-flash is busy or hits quota
+        try {
+          const liteResponse = await withTimeout(
+            ai.models.generateContent({
+              model: 'gemini-3.1-flash-lite',
+              contents: prompt,
+              config: {
+                responseMimeType: 'application/json',
+              },
+            }),
+            5000,
+            'Slip generation lite timeout'
+          );
+          parsed = JSON.parse(liteResponse.text || '{}');
+        } catch {
+          // Use standard clinical slip below
+        }
+      }
 
-      const parsed = JSON.parse(response.text || '{}');
-      return res.json({ slip: parsed });
-    } catch (err: any) {
-      console.warn('Slip generator using standard fallback:', err?.message);
+      if (parsed && parsed.ringkasanKeluhan) {
+        return res.json({ slip: parsed });
+      }
+
+    } catch {
+      console.log('[NADI Engine] Using structured clinical UKS slip format.');
       // Standard clinical slip format fallback
       return res.json({
         slip: {

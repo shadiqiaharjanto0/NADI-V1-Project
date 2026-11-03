@@ -31,19 +31,19 @@ export function parseHealthCheckResponse(text: string): StructuredHealthCheck | 
   }
 
   // Extract Keluhan Utama
-  const keluhanMatch = text.match(/Keluhan utama:?\s*([\s\S]*?)(?=\*\*Rekomendasi urgensi|\*\*Penjelasan|\n\n\*\*|$)/i);
+  const keluhanMatch = text.match(/(?:Keluhan Utama|Keluhan utama):?\s*([\s\S]*?)(?=\*\*Rekomendasi urgensi|\*\*Penalaran|\*\*Penjelasan|\n\n\*\*|$)/i);
   const keluhanUtama = keluhanMatch
     ? keluhanMatch[1].replace(/^\*\*|\*\*$/g, '').trim()
     : 'Keluhan kesehatan siswa';
 
-  // Extract Penjelasan Singkat
-  const penjelasanMatch = text.match(/Penjelasan singkat:?\s*([\s\S]*?)(?=\*\*Yang perlu kamu lakukan|\*\*Tindakan|\n\n\*\*|$)/i);
+  // Extract Penalaran Klinis / Penjelasan Singkat
+  const penjelasanMatch = text.match(/(?:Penalaran Klinis|Penalaran klinis|Penalaran singkat|Penjelasan singkat):?\s*([\s\S]*?)(?=\*\*Tindakan|\*\*Yang perlu kamu lakukan|\n\n\*\*|$)/i);
   const penjelasan = penjelasanMatch
     ? penjelasanMatch[1].replace(/^\*\*|\*\*$/g, '').trim()
     : '';
 
-  // Extract Yang perlu kamu lakukan sekarang
-  const tindakanMatch = text.match(/Yang perlu kamu lakukan sekarang:?\s*([\s\S]*?)(?=\*\*Tanda bahaya|\n\n\*\*|$)/i);
+  // Extract Tindakan Keselamatan Siswa / Yang perlu kamu lakukan sekarang
+  const tindakanMatch = text.match(/(?:Tindakan Keselamatan Siswa|Tindakan keselamatan siswa|Yang perlu kamu lakukan sekarang):?\s*([\s\S]*?)(?=\*\*Tanda bahaya|\n\n\*\*|$)/i);
   let tindakanSekarang: string[] = [];
   if (tindakanMatch) {
     tindakanSekarang = tindakanMatch[1]
@@ -52,8 +52,8 @@ export function parseHealthCheckResponse(text: string): StructuredHealthCheck | 
       .filter(line => line.length > 0);
   }
 
-  // Extract Tanda bahaya
-  const bahayaMatch = text.match(/Tanda bahaya yang perlu diwaspadai:?\s*([\s\S]*?)(?=\*\*Tindak lanjut|\n\n\*\*|$)/i);
+  // Extract Tanda Bahaya (Red Flags)
+  const bahayaMatch = text.match(/(?:Tanda Bahaya \(Red Flags\)|Tanda bahaya \(red flags\)|Tanda bahaya yang perlu diwaspadai|Tanda bahaya):?\s*([\s\S]*?)(?=\*\*Tindak lanjut|\n\n\*\*|$)/i);
   let tandaBahaya: string[] = [];
   if (bahayaMatch) {
     tandaBahaya = bahayaMatch[1]
@@ -62,8 +62,8 @@ export function parseHealthCheckResponse(text: string): StructuredHealthCheck | 
       .filter(line => line.length > 0);
   }
 
-  // Extract Tindak lanjut
-  const tindakLanjutMatch = text.match(/Tindak lanjut:?\s*([\s\S]*?)(?=\n\n\*\*|Kalau keluhanmu|$)/i);
+  // Extract Tindak Lanjut UKS
+  const tindakLanjutMatch = text.match(/(?:Tindak Lanjut UKS|Tindak lanjut UKS|Tindak lanjut):?\s*([\s\S]*?)(?=\n\n\*\*|Kalau keluhanmu|$)/i);
   const tindakLanjut = tindakLanjutMatch
     ? tindakLanjutMatch[1].replace(/^\*\*|\*\*$/g, '').trim()
     : '';
@@ -72,8 +72,8 @@ export function parseHealthCheckResponse(text: string): StructuredHealthCheck | 
     keluhanUtama,
     urgensi,
     penjelasan,
-    tindakanSekarang: tindakanSekarang.length > 0 ? tindakanSekarang : ['Istirahat cukup di asrama/UKS', 'Pantau perkembangan gejala'],
-    tandaBahaya: tandaBahaya.length > 0 ? tandaBahaya : ['Gejala bertambah parah dalam 24 jam', 'Demam tinggi mendadak'],
-    tindakLanjut: tindakLanjut || 'Hubungi petugas UKS atau pembina asrama jika keluhan tidak membaik.'
+    tindakanSekarang: tindakanSekarang.length > 0 ? tindakanSekarang : ['Istirahat cukup di kamar asrama / UKS', 'Pantau perkembangan gejala secara teratur'],
+    tandaBahaya: tandaBahaya.length > 0 ? tandaBahaya : ['Gejala bertambah berat dalam 24 jam', 'Demam tinggi mendadak'],
+    tindakLanjut: tindakLanjut || 'Hubungi petugas UKS atau pembina asrama jika keluhan menetap.'
   };
 }
